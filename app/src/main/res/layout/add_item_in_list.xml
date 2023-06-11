@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <EditText android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Название продукта"/>
+
+        <EditText android:id="@+id/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="1"
+            android:inputType="number"
+            android:minWidth="40dp"/>
+
+        <Spinner android:id="@+id/item_weight_unit_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="шт."/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_price_for_smth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Цена за 1 ед. " />
+
+        <EditText
+            android:id="@+id/item_price_for_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <EditText android:id="@+id/item_add_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="40dp"
+        android:inputType="date"/>
+
+    <Button
+        android:id="@+id/add_new_item_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавить" />
+
+</LinearLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/sep_line1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView android:id="@+id/list_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10/10/2001"
+            android:visibility="gone"/>
+
+        <TextView android:id="@+id/list_item_all_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1050"
+            android:layout_marginLeft="200dp"
+            android:visibility="gone"/>
+        <View
+            android:id="@+id/sep_line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/list_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="35dp"
+            android:text="Молоко"/>
+
+        <TextView android:id="@+id/list_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/list_item_count"
+            android:layout_margin="35dp"
+            android:text="200 р."/>
+
+        <TextView android:id="@+id/list_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/list_item_weight_unit"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="10dp"
+            android:text="100"/>
+
+        <TextView android:id="@+id/list_item_weight_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/list_item_delete"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="20dp"
+            android:text="шт."/>
+
+        <Button android:id="@+id/list_item_delete"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:text="X"/>
+    </RelativeLayout>
+</LinearLayout>
