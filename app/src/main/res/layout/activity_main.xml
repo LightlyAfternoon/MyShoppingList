@@ -7,11 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:gravity="left">
+
+        <Spinner android:id="@+id/filter_item_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/items_date_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Введите дату"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+        <TextView android:id="@+id/items_month_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+    </androidx.appcompat.widget.Toolbar>
+
     <ListView
         android:id="@+id/item_view"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="65dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_item"
