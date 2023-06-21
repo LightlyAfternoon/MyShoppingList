@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.UUID;
 
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemTable;
+import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 
 public class ItemBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -17,14 +18,24 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("create table " + WeightUnitTable.NAME + "(" +
+                " _id integer primary key autoIncrement, " +
+                WeightUnitTable.Cols.UUID + ", " +
+                WeightUnitTable.Cols.NAMEWEIGHTUNIT + ")");
+
+        db.execSQL("INSERT INTO " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ", " + WeightUnitTable.Cols.NAMEWEIGHTUNIT + ")" +
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'шт.'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'кг'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'л'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'г'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'мл')");
+
         db.execSQL("create table " + ItemTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
                 ItemTable.Cols.UUID + ", " +
                 ItemTable.Cols.NAMEITEM + ", " +
                 ItemTable.Cols.COUNT + ", " +
-                ItemTable.Cols.WEIGHTUNIT + ", " +
                 ItemTable.Cols.PRICEFORONE + ", " +
-                ItemTable.Cols.ADDDATE + ")");
+                ItemTable.Cols.ADDDATE + ", " +
+                ItemTable.Cols.WEIGHTUNITID + ", " +
+                ItemTable.Cols.ISBOUGHT + ", " +
+                "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ")");
     }
 
     @Override

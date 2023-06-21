@@ -40,7 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_margin="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
             android:text="Молоко"/>
 
         <TextView android:id="@+id/list_item_price"
@@ -61,10 +64,16 @@
         <TextView android:id="@+id/list_item_weight_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/list_item_delete"
+            android:layout_toLeftOf="@id/list_item_is_bought"
             android:layout_marginTop="35dp"
             android:layout_marginRight="20dp"
             android:text="шт."/>
+
+        <CheckBox android:id="@+id/list_item_is_bought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/list_item_delete"
+            android:layout_marginTop="20dp"/>
 
         <Button android:id="@+id/list_item_delete"
             android:layout_width="60dp"

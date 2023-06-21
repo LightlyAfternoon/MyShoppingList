@@ -2,7 +2,10 @@ package ru.rsue.Karnaukhova;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,26 +13,21 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+
+import ru.rsue.Karnaukhova.database.ItemBaseHelper;
+import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
+import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
+    private Context mContext;
+    private SQLiteDatabase mDatabase;
+
     private void sort() {
         Collections.sort(items, new Comparator<Item>() {
             @Override
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI() {
         ItemStorage itemStorage = ItemStorage.get(MainActivity.this);
+
+        mContext = getApplicationContext();
+        mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
         mSelectFilterSpinner = findViewById(R.id.filter_item_select);
         EditText itemsDateFilter = findViewById(R.id.items_date_filter);
@@ -133,12 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (sdf.parse(fd).equals(sdf.parse(sd))) {
                             items.add(it);
-                            if (it.getWeightUnit().equals("шт.") || it.getWeightUnit().equals("кг.") || it.getWeightUnit().equals("л.")){
-                                monthCost += it.getPriceForOne() * it.getCount();
-                            }
-                            else {
-                                monthCost += (it.getPriceForOne() / 100) * it.getCount();
-                            }
+                            monthCost = CountCost.CountCost(it, monthCost, mContext);
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);

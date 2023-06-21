@@ -1,16 +1,15 @@
 package ru.rsue.Karnaukhova;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 public class Item {
     private UUID mId;
     private String mName;
     private int mCount;
-    private String mWeightUnit;
+    private UUID mWeightUnitId;
     private double mPriceForOne;
     private long mAddDate;
+    private int mIsBought;
 
     public Item(UUID id) {
         mId = id;
@@ -36,12 +35,12 @@ public class Item {
         mCount = count;
     }
 
-    public String getWeightUnit() {
-        return mWeightUnit;
+    public UUID getWeightUnit() {
+        return mWeightUnitId;
     }
 
-    public void setWeightUnit(String weightUnit) {
-        mWeightUnit = weightUnit;
+    public void setWeightUnit(UUID weightUnit) {
+        mWeightUnitId = weightUnit;
     }
 
     public double getPriceForOne() {
@@ -58,5 +57,13 @@ public class Item {
 
     public void setAddDate(long addDate) {
         mAddDate = addDate;
+    }
+
+    public int isBought() {
+        return mIsBought;
+    }
+
+    public void setBought(int bought) {
+        mIsBought = bought;
     }
 }
