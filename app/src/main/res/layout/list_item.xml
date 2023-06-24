@@ -18,14 +18,19 @@
         <TextView android:id="@+id/list_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
             android:text="10/10/2001"
             android:visibility="gone"/>
 
         <TextView android:id="@+id/list_item_all_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
             android:text="1050"
-            android:layout_marginLeft="200dp"
+            android:layout_marginLeft="270dp"
             android:visibility="gone"/>
         <View
             android:id="@+id/sep_line2"
@@ -37,29 +42,39 @@
 
         <TextView
             android:id="@+id/list_item_name"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/list_item_delete"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
+            android:ellipsize="marquee"
+            android:textSize="16dp"
+            android:text="Молоко"/>
+
+        <TextView
+            android:id="@+id/list_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:maxWidth="60dp"
+            android:ellipsize="marquee"
             android:layout_marginStart="35dp"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="35dp"
-            android:text="Молоко"/>
-
-        <TextView android:id="@+id/list_item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/list_item_count"
-            android:layout_margin="35dp"
-            android:text="200 р."/>
+            android:text="200 р."
+            android:textSize="16dp" />
 
         <TextView android:id="@+id/list_item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="30dp"
             android:layout_toLeftOf="@id/list_item_weight_unit"
             android:layout_marginTop="35dp"
             android:layout_marginRight="10dp"
-            android:text="100"/>
+            android:text="100"
+            android:textSize="16dp" />
 
         <TextView android:id="@+id/list_item_weight_unit"
             android:layout_width="wrap_content"
@@ -67,20 +82,23 @@
             android:layout_toLeftOf="@id/list_item_is_bought"
             android:layout_marginTop="35dp"
             android:layout_marginRight="20dp"
+            android:textSize="16dp"
             android:text="шт."/>
 
         <CheckBox android:id="@+id/list_item_is_bought"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/list_item_delete"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"/>
 
         <Button android:id="@+id/list_item_delete"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:textSize="16dp"
             android:text="X"/>
     </RelativeLayout>
 </LinearLayout>

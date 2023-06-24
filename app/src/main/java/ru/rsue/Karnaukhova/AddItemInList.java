@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,12 +27,14 @@ import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class AddItemInList extends AppCompatActivity {
-    private Item mItem;
-
+    Item mItem;
     Context mContext;
     SQLiteDatabase mDatabase;
+    Date date;
 
-    private ItemCursorWrapper queryWeightUnit(String name) {
+    String item;
+
+    ItemCursorWrapper queryWeightUnitWithName(String name) {
         Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
                 null,
                 ItemDbSchema.WeightUnitTable.Cols.NAMEWEIGHTUNIT + " = ?",
@@ -57,8 +57,6 @@ public class AddItemInList extends AppCompatActivity {
 
         mItem = new Item(UUID.randomUUID());
 
-        mItem.setBought(0);
-
         List<WeightUnit> mWeightUnits = itemStorage.getWeightUnits();
         ArrayList<String> mWeightUnitsNames = new ArrayList<>();
         for (WeightUnit weightUnit:mWeightUnits) {
@@ -77,95 +75,12 @@ public class AddItemInList extends AppCompatActivity {
         mItemAddDate.setText(sdf.format(new Date()));
 
         try {
-            Date date = sdf.parse(mItemAddDate.getText().toString());
+            date = sdf.parse(mItemAddDate.getText().toString());
             mItem.setAddDate(date.getTime());
         }
         catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
-        mItemName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mItem.setName(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mItemCount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty()) {
-                    mItem.setCount(Integer.parseInt(s.toString()));
-                }
-                else {
-                    mItem.setCount(1);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mItemPriceForOne.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty()) {
-                    mItem.setPriceForOne(Double.parseDouble(s.toString()));
-                }
-                else {
-                    mItem.setPriceForOne(0);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mItemAddDate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-/////////Repair////////
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try {
-                    Date date = sdf.parse(s.toString());
-                    mItem.setAddDate(date.getTime());
-                }
-                catch (Exception e){}
-            }
-////////////////////////
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mWeightUnitsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -175,19 +90,8 @@ public class AddItemInList extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = (String)parent.getItemAtPosition(position);
+                item = (String)parent.getItemAtPosition(position);
                 TextView textViewPriceForSmth = findViewById(R.id.tv_price_for_smth);
-
-                ItemCursorWrapper cursor = queryWeightUnit(item);
-                try {
-                    cursor.moveToFirst();
-                    while (!cursor.isAfterLast()) {
-                        mItem.setWeightUnit(cursor.getWeightUnit().getId());
-                        cursor.moveToNext();
-                    }
-                } finally {
-                    cursor.close();
-                }
 
                 if (item.equals("шт.")) {
                     textViewPriceForSmth.setText("Цена за 1 шт.");
@@ -215,6 +119,47 @@ public class AddItemInList extends AppCompatActivity {
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mItem.setName(mItemName.getText().toString());
+
+                if (!mItemCount.getText().toString().isEmpty()) {
+                    mItem.setCount(Integer.parseInt(mItemCount.getText().toString()));
+                }
+                else {
+                    mItem.setCount(1);
+                }
+
+                if (!mItemPriceForOne.getText().toString().isEmpty()) {
+                    mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
+                }
+                else {
+                    mItem.setPriceForOne(0);
+                }
+
+                try {
+                    date = sdf.parse(mItemAddDate.getText().toString());
+                }
+                catch (Exception e){
+                    try {
+                        date = sdf.parse(new Date().toString());
+                    } catch (ParseException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                mItem.setAddDate(date.getTime());
+
+                ItemCursorWrapper cursor = queryWeightUnitWithName(item);
+                try {
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        mItem.setWeightUnit(cursor.getWeightUnit().getId());
+                        cursor.moveToNext();
+                    }
+                } finally {
+                    cursor.close();
+                }
+
+                mItem.setBought(0);
+
                 ItemStorage.get(AddItemInList.this).addItem(mItem);
 
                 Intent intent = new Intent(AddItemInList.this, MainActivity.class);

@@ -8,17 +8,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 
 public class ItemStorage {
-    private static ItemStorage sItemStorage;
-    private Context mContext;
-    private SQLiteDatabase mDatabase;
+    static ItemStorage sItemStorage;
+    Context mContext;
+    SQLiteDatabase mDatabase;
+    ItemCursorWrapper mCursorWrapper;
+    Cursor cursor;
+    static ContentValues values;
 
     public static ItemStorage get(Context context) {
         if (sItemStorage == null) {
@@ -30,31 +31,24 @@ public class ItemStorage {
     private ItemStorage(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
-
-        //setStartUnits();
     }
 
     public void addItem(Item item) {
-        ContentValues values = getContentValues(item);
+        values = getContentValues(item);
         mDatabase.insert(ItemTable.NAME, null, values);
-    }
-
-    public void addWeightUnit(WeightUnit weightUnit) {
-        ContentValues values = getContentValues(weightUnit);
-        mDatabase.insert(WeightUnitTable.NAME, null, values);
     }
 
     public List<Item> getItems() {
         List<Item> items = new ArrayList<>();
-        ItemCursorWrapper cursor = queryItems(null, null);
+        mCursorWrapper = queryItems(null, null);
         try {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                items.add(cursor.getItem());
-                cursor.moveToNext();
+            mCursorWrapper.moveToFirst();
+            while (!mCursorWrapper.isAfterLast()) {
+                items.add(mCursorWrapper.getItem());
+                mCursorWrapper.moveToNext();
             }
         } finally {
-            cursor.close();
+            mCursorWrapper.close();
         }
 
         return items;
@@ -62,32 +56,22 @@ public class ItemStorage {
 
     public List<WeightUnit> getWeightUnits() {
         List<WeightUnit> weightUnits = new ArrayList<>();
-        ItemCursorWrapper cursor = queryWeightUnits(null, null);
+        mCursorWrapper = queryAllWeightUnits(null, null);
         try {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                weightUnits.add(cursor.getWeightUnit());
-                cursor.moveToNext();
+            mCursorWrapper.moveToFirst();
+            while (!mCursorWrapper.isAfterLast()) {
+                weightUnits.add(mCursorWrapper.getWeightUnit());
+                mCursorWrapper.moveToNext();
             }
         } finally {
-            cursor.close();
+            mCursorWrapper.close();
         }
 
         return weightUnits;
     }
 
-    public void setStartUnits() {
-        List<String> namesUnits = Arrays.asList("шт.", "кг", "л", "г", "мл");
-        for (String str: namesUnits) {
-            WeightUnit weightUnit = new WeightUnit(UUID.randomUUID());
-            weightUnit.setName(str);
-
-            addWeightUnit(weightUnit);
-        }
-    }
-
     private static ContentValues getContentValues(Item item) {
-        ContentValues values = new ContentValues();
+        values = new ContentValues();
         values.put(ItemTable.Cols.UUID, item.getId().toString());
         values.put(ItemTable.Cols.NAMEITEM, item.getName());
         values.put(ItemTable.Cols.COUNT, String.valueOf(item.getCount()));
@@ -97,15 +81,8 @@ public class ItemStorage {
         return values;
     }
 
-    private static ContentValues getContentValues(WeightUnit weightUnit) {
-        ContentValues values = new ContentValues();
-        values.put(WeightUnitTable.Cols.UUID, weightUnit.getId().toString());
-        values.put(WeightUnitTable.Cols.NAMEWEIGHTUNIT, weightUnit.getName());
-        return values;
-    }
-
     private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
-        Cursor cursor = mDatabase.query(ItemTable.NAME,
+        cursor = mDatabase.query(ItemTable.NAME,
                 null, //Columns - null выбирает все столбцы
                 whereClause,
                 whereArgs,
@@ -115,8 +92,8 @@ public class ItemStorage {
         return new ItemCursorWrapper(cursor);
     }
 
-    private ItemCursorWrapper queryWeightUnits(String whereClause, String[] whereArgs) {
-        Cursor cursor = mDatabase.query(WeightUnitTable.NAME,
+    private ItemCursorWrapper queryAllWeightUnits(String whereClause, String[] whereArgs) {
+        cursor = mDatabase.query(WeightUnitTable.NAME,
                 null,
                 whereClause,
                 whereArgs,

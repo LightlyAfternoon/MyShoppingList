@@ -2,8 +2,6 @@ package ru.rsue.Karnaukhova;
 
 import java.util.UUID;
 
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-
 public class WeightUnit {
     private UUID mId;
     private String mName;

@@ -3,13 +3,13 @@ package ru.rsue.Karnaukhova;
 import java.util.UUID;
 
 public class Item {
-    private UUID mId;
-    private String mName;
-    private int mCount;
-    private UUID mWeightUnitId;
-    private double mPriceForOne;
-    private long mAddDate;
-    private int mIsBought;
+    UUID mId;
+    String mName;
+    int mCount;
+    UUID mWeightUnitId;
+    double mPriceForOne;
+    long mAddDate;
+    int mIsBought;
 
     public Item(UUID id) {
         mId = id;

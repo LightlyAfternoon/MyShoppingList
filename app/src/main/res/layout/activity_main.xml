@@ -16,19 +16,26 @@
         android:theme="?attr/actionBarTheme"
         android:gravity="left">
 
-        <Spinner android:id="@+id/filter_item_select"
+        <Spinner
+            android:id="@+id/filter_item_select"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF" />
 
         <EditText android:id="@+id/items_date_filter"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textSize="16dp"
+            android:textStyle="bold"
             android:hint="Введите дату"
             android:textColor="@color/white"
             android:visibility="gone"/>
+
         <TextView android:id="@+id/items_month_cost"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textSize="16dp"
+            android:textStyle="bold"
             android:textColor="@color/white"
             android:visibility="gone"/>
     </androidx.appcompat.widget.Toolbar>

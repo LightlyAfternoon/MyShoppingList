@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,12 +25,10 @@ import java.util.Comparator;
 import java.util.Date;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton mAddItem;
+    FloatingActionButton mAddItem;
 
     ArrayList<Item> items = new ArrayList<Item>();
     ListView itemsView;
@@ -42,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    private Context mContext;
-    private SQLiteDatabase mDatabase;
+    Context mContext;
+    SQLiteDatabase mDatabase;
 
     private void sort() {
         Collections.sort(items, new Comparator<Item>() {
@@ -72,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView)parent.getChildAt(0)).setTextSize(16);
 
-                String item = (String)parent.getItemAtPosition(position);
+                String selectedItem = (String)parent.getItemAtPosition(position);
 
-                if (item.equals("За день")) {
+                if (selectedItem.equals("За день")) {
                     itemsDateFilter.setVisibility(View.VISIBLE);
                     itemsMonthCost.setVisibility(View.GONE);
                     sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     itemsDateFilter.setText(sdf.format(new Date()));
                     itemAdapter.notifyDataSetChanged();
                 }
-                else if (item.equals("За месяц")) {
+                else if (selectedItem.equals("За месяц")) {
                     itemsMonthCost.setVisibility(View.VISIBLE);
                     sdf = new SimpleDateFormat("MM.yyyy");
 
@@ -131,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                     date = new Date();
                 }
                 for (Item it : itemStorage.getItems()) {
+                    String firstDate = sdf.format(new Date(it.getAddDate()));
+                    String secondDate = sdf.format(date);
 
-                    String fd = sdf.format(new Date(it.getAddDate()));
-                    String sd = sdf.format(date);
                     try {
-                        if (sdf.parse(fd).equals(sdf.parse(sd))) {
+                        if (sdf.parse(firstDate).equals(sdf.parse(secondDate))) {
                             items.add(it);
                             monthCost = CountCost.CountCost(it, monthCost, mContext);
                         }
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                sort();
             }
         });
 

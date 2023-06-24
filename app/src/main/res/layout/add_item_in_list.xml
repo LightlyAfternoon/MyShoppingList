@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:hint="Название продукта"/>
+            android:hint="Название продукта"
+            android:textSize="16dp"/>
 
         <EditText android:id="@+id/item_count"
             android:layout_width="wrap_content"
@@ -27,7 +28,8 @@
         <Spinner android:id="@+id/item_weight_unit_spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:hint="шт."/>
+            android:hint="шт."
+            android:textSize="16dp"/>
 
     </LinearLayout>
 
@@ -40,27 +42,30 @@
             android:id="@+id/tv_price_for_smth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Цена за 1 ед. " />
+            android:text="Цена за 1 ед. "
+            android:textSize="16dp"/>
 
         <EditText
             android:id="@+id/item_price_for_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal" />
+            android:ems="5"
+            android:inputType="numberDecimal"
+            android:textSize="16dp"/>
     </LinearLayout>
 
     <EditText android:id="@+id/item_add_date"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="5"
         android:layout_margin="40dp"
+        android:text="24.10.2023"
         android:inputType="date"/>
 
     <Button
         android:id="@+id/add_new_item_in_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Добавить" />
-
+        android:text="Добавить"
+        android:textSize="16dp"/>
 </LinearLayout>
