@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -59,7 +60,7 @@ public class AddItemInList extends AppCompatActivity {
 
         List<WeightUnit> mWeightUnits = itemStorage.getWeightUnits();
         ArrayList<String> mWeightUnitsNames = new ArrayList<>();
-        for (WeightUnit weightUnit:mWeightUnits) {
+        for (WeightUnit weightUnit : mWeightUnits) {
             mWeightUnitsNames.add(weightUnit.getName());
         }
         EditText mItemName = findViewById(R.id.item_name);
@@ -77,8 +78,7 @@ public class AddItemInList extends AppCompatActivity {
         try {
             date = sdf.parse(mItemAddDate.getText().toString());
             mItem.setAddDate(date.getTime());
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
@@ -90,22 +90,18 @@ public class AddItemInList extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                item = (String)parent.getItemAtPosition(position);
+                item = (String) parent.getItemAtPosition(position);
                 TextView textViewPriceForSmth = findViewById(R.id.tv_price_for_smth);
 
                 if (item.equals("шт.")) {
                     textViewPriceForSmth.setText("Цена за 1 шт.");
-                }
-                else if (item.equals("г")) {
+                } else if (item.equals("г")) {
                     textViewPriceForSmth.setText("Цена за 100 г");
-                }
-                else if (item.equals("мл")) {
+                } else if (item.equals("мл")) {
                     textViewPriceForSmth.setText("Цена за 100 мл");
-                }
-                else if (item.equals("кг")) {
+                } else if (item.equals("кг")) {
                     textViewPriceForSmth.setText("Цена за 1 кг");
-                }
-                else if (item.equals("л")) {
+                } else if (item.equals("л")) {
                     textViewPriceForSmth.setText("Цена за 1 л");
                 }
             }
@@ -123,47 +119,41 @@ public class AddItemInList extends AppCompatActivity {
 
                 if (!mItemCount.getText().toString().isEmpty()) {
                     mItem.setCount(Integer.parseInt(mItemCount.getText().toString()));
-                }
-                else {
+                } else {
                     mItem.setCount(1);
                 }
 
                 if (!mItemPriceForOne.getText().toString().isEmpty()) {
                     mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
-                }
-                else {
+                } else {
                     mItem.setPriceForOne(0);
                 }
 
                 try {
                     date = sdf.parse(mItemAddDate.getText().toString());
-                }
-                catch (Exception e){
+                    mItem.setAddDate(date.getTime());
+
+                    ItemCursorWrapper cursor = queryWeightUnitWithName(item);
                     try {
-                        date = sdf.parse(new Date().toString());
-                    } catch (ParseException ex) {
-                        throw new RuntimeException(ex);
+                        cursor.moveToFirst();
+                        while (!cursor.isAfterLast()) {
+                            mItem.setWeightUnit(cursor.getWeightUnit().getId());
+                            cursor.moveToNext();
+                        }
+                    } finally {
+                        cursor.close();
                     }
+
+                    mItem.setBought(0);
+
+                    ItemStorage.get(AddItemInList.this).addItem(mItem);
+
+                    Intent intent = new Intent(AddItemInList.this, MainActivity.class);
+                    startActivity(intent);
                 }
-                mItem.setAddDate(date.getTime());
-
-                ItemCursorWrapper cursor = queryWeightUnitWithName(item);
-                try {
-                    cursor.moveToFirst();
-                    while (!cursor.isAfterLast()) {
-                        mItem.setWeightUnit(cursor.getWeightUnit().getId());
-                        cursor.moveToNext();
-                    }
-                } finally {
-                    cursor.close();
+                catch (ParseException ex) {
+                    Toast.makeText(mContext, "Введите корректную дату", Toast.LENGTH_LONG).show();
                 }
-
-                mItem.setBought(0);
-
-                ItemStorage.get(AddItemInList.this).addItem(mItem);
-
-                Intent intent = new Intent(AddItemInList.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }
