@@ -28,17 +28,17 @@ import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class AddItemInList extends AppCompatActivity {
-    Item mItem;
+    ItemInList mItemInList;
     Context mContext;
     SQLiteDatabase mDatabase;
     Date date;
 
     String item;
 
-    ItemCursorWrapper queryWeightUnitWithName(String name) {
-        Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
+    ItemCursorWrapper queryItemWithName(String name) {
+        Cursor cursor = mDatabase.query(ItemDbSchema.ItemTable.NAME,
                 null,
-                ItemDbSchema.WeightUnitTable.Cols.NAMEWEIGHTUNIT + " = ?",
+                ItemDbSchema.ItemTable.Cols.NAMEITEM + " = ?",
                 new String[]{name},
                 null,
                 null,
@@ -56,17 +56,16 @@ public class AddItemInList extends AppCompatActivity {
 
         ItemStorage itemStorage = ItemStorage.get(AddItemInList.this);
 
-        mItem = new Item(UUID.randomUUID());
+        mItemInList = new ItemInList(UUID.randomUUID());
 
-        List<WeightUnit> mWeightUnits = itemStorage.getWeightUnits();
-        ArrayList<String> mWeightUnitsNames = new ArrayList<>();
-        for (WeightUnit weightUnit : mWeightUnits) {
-            mWeightUnitsNames.add(weightUnit.getName());
+        List<Item> mItem = itemStorage.getItems();
+        ArrayList<String> mItemNames = new ArrayList<>();
+        for (Item item : mItem) {
+            mItemNames.add(item.getName());
         }
-        EditText mItemName = findViewById(R.id.item_name);
+        Spinner mItemName = findViewById(R.id.item_spinner);
         EditText mItemCount = findViewById(R.id.item_count);
-        Spinner mWeightUnitSpinner = findViewById(R.id.item_weight_unit_spinner);
-        EditText mItemPriceForOne = findViewById(R.id.item_price_for_one);
+        TextView mWeightUnit = findViewById(R.id.item_weight_unit);
         EditText mItemAddDate = findViewById(R.id.item_add_date);
         Button mAddItem = findViewById(R.id.add_new_item_in_list);
 
@@ -77,32 +76,30 @@ public class AddItemInList extends AppCompatActivity {
 
         try {
             date = sdf.parse(mItemAddDate.getText().toString());
-            mItem.setAddDate(date.getTime());
+            mItemInList.setAddDate(date.getTime());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mWeightUnitsNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItemNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mWeightUnitSpinner.setAdapter(adapter);
+        mItemName.setAdapter(adapter);
 
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 item = (String) parent.getItemAtPosition(position);
-                TextView textViewPriceForSmth = findViewById(R.id.tv_price_for_smth);
 
-                if (item.equals("шт.")) {
-                    textViewPriceForSmth.setText("Цена за 1 шт.");
-                } else if (item.equals("г")) {
-                    textViewPriceForSmth.setText("Цена за 100 г");
-                } else if (item.equals("мл")) {
-                    textViewPriceForSmth.setText("Цена за 100 мл");
-                } else if (item.equals("кг")) {
-                    textViewPriceForSmth.setText("Цена за 1 кг");
-                } else if (item.equals("л")) {
-                    textViewPriceForSmth.setText("Цена за 1 л");
+                ItemCursorWrapper cursor = queryItemWithName(item);
+                try {
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        mWeightUnit.setText(cursor.getWeightUnit().getName());
+                        cursor.moveToNext();
+                    }
+                } finally {
+                    cursor.close();
                 }
             }
 
@@ -110,43 +107,35 @@ public class AddItemInList extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         };
-        mWeightUnitSpinner.setOnItemSelectedListener(itemSelectedListener);
+        mItemName.setOnItemSelectedListener(itemSelectedListener);
 
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItem.setName(mItemName.getText().toString());
-
                 if (!mItemCount.getText().toString().isEmpty()) {
-                    mItem.setCount(Integer.parseInt(mItemCount.getText().toString()));
+                    mItemInList.setCount(Integer.parseInt(mItemCount.getText().toString()));
                 } else {
-                    mItem.setCount(1);
-                }
-
-                if (!mItemPriceForOne.getText().toString().isEmpty()) {
-                    mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
-                } else {
-                    mItem.setPriceForOne(0);
+                    mItemInList.setCount(1);
                 }
 
                 try {
                     date = sdf.parse(mItemAddDate.getText().toString());
-                    mItem.setAddDate(date.getTime());
+                    mItemInList.setAddDate(date.getTime());
 
-                    ItemCursorWrapper cursor = queryWeightUnitWithName(item);
+                    ItemCursorWrapper cursor = queryItemWithName(item);
                     try {
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {
-                            mItem.setWeightUnit(cursor.getWeightUnit().getId());
+                            mItemInList.setItemId(cursor.getItem().getId());
                             cursor.moveToNext();
                         }
                     } finally {
                         cursor.close();
                     }
 
-                    mItem.setBought(0);
+                    mItemInList.setBought(0);
 
-                    ItemStorage.get(AddItemInList.this).addItem(mItem);
+                    ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);
 
                     Intent intent = new Intent(AddItemInList.this, MainActivity.class);
                     startActivity(intent);

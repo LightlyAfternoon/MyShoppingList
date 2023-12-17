@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton mAddItem;
 
-    ArrayList<Item> items = new ArrayList<Item>();
-    ListView itemsView;
+    ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
+    ListView itemsInListView;
     ItemAdapter itemAdapter;
 
     String[] mFilterChoices = {"Всё", "За день", "За месяц"};
@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase mDatabase;
 
     private void sort() {
-        Collections.sort(items, new Comparator<Item>() {
+        Collections.sort(itemsInList, new Comparator<ItemInList>() {
             @Override
-            public int compare(Item lhs, Item rhs) {
+            public int compare(ItemInList lhs, ItemInList rhs) {
                 return String.valueOf(rhs.getAddDate()).compareTo(String.valueOf(lhs.getAddDate()));
             }
         });
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                     itemsDateFilter.setVisibility(View.GONE);
                     itemsMonthCost.setVisibility(View.GONE);
 
-                    items.clear();
-                    items.addAll(itemStorage.getItems());
+                    itemsInList.clear();
+                    itemsInList.addAll(itemStorage.getItemsInList());
 
                     sort();
                     itemAdapter.notifyDataSetChanged();
@@ -122,20 +122,20 @@ public class MainActivity extends AppCompatActivity {
                 Date date = null;
                 double monthCost = 0;
                 try {
-                    items.clear();
+                    itemsInList.clear();
                     date = sdf.parse(s.toString());
                 }
                 catch (ParseException e) {
                     date = new Date();
                 }
-                for (Item it : itemStorage.getItems()) {
-                    String firstDate = sdf.format(new Date(it.getAddDate()));
+                for (ItemInList itInL : itemStorage.getItemsInList()) {
+                    String firstDate = sdf.format(new Date(itInL.getAddDate()));
                     String secondDate = sdf.format(date);
 
                     try {
                         if (sdf.parse(firstDate).equals(sdf.parse(secondDate))) {
-                            items.add(it);
-                            monthCost = CountCost.CountCost(it, monthCost, mContext);
+                            itemsInList.add(itInL);
+                            monthCost = CountCost.CountCost(itInL, monthCost, mContext);
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -151,11 +151,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        itemsView = findViewById(R.id.item_view);
+        itemsInListView = findViewById(R.id.item_view);
         if (itemAdapter == null) {
-            items.addAll(itemStorage.getItems());
-            itemAdapter = new ItemAdapter(this, R.layout.list_item, items);
-            itemsView.setAdapter(itemAdapter);
+            itemsInList.addAll(itemStorage.getItemsInList());
+            itemAdapter = new ItemAdapter(this, R.layout.list_item, itemsInList);
+            itemsInListView.setAdapter(itemAdapter);
         }
         else {
             itemAdapter.notifyDataSetChanged();

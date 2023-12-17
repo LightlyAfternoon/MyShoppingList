@@ -16,29 +16,31 @@ import java.util.List;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
+import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 
-public class ItemAdapter extends ArrayAdapter<Item> {
+public class ItemAdapter extends ArrayAdapter<ItemInList> {
     LayoutInflater mInflater;
     int mLayout;
-    List<Item> mItems;
+    List<Item> mItem;
+    List<ItemInList> mItemInList;
     Context mContext;
     SQLiteDatabase mDatabase;
     double mCost = 0;
 
-    public ItemAdapter(Context context, int resource, List<Item> items) {
-        super(context, resource, items);
+    public ItemAdapter(Context context, int resource, List<ItemInList> itemInList) {
+        super(context, resource, itemInList);
 
         mContext = context.getApplicationContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
-        mItems = items;
+        mItemInList = itemInList;
         mLayout = resource;
         mInflater = LayoutInflater.from(context);
     }
 
     double sumCost(String lastDate){
-        for (Item i: mItems) {
+        for (ItemInList i: mItemInList) {
             if (String.valueOf(i.getAddDate()).equals(lastDate)) {
                 mCost = CountCost.CountCost(i, mCost, mContext);
             }
@@ -59,7 +61,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView priceView = view.findViewById(R.id.list_item_price);
         CheckBox boughtCheckBox = view.findViewById(R.id.list_item_is_bought);
 
-        Item item = mItems.get(position);
+        ItemInList itemInList = mItemInList.get(position);
+        ItemCursorWrapper cursorWrapperItem = ItemStorage.queryItem(itemInList, mContext);
+        Item item = mItem.get(position);
+        try {
+            cursorWrapperItem.moveToFirst();
+            while (!cursorWrapperItem.isAfterLast()) {
+                item = (cursorWrapperItem.getItem());
+                cursorWrapperItem.moveToNext();
+            }
+        }
+        finally {
+            cursorWrapperItem.close();
+        }
 
         ItemCursorWrapper cursorWrapper = QueryWeightUnit.queryWeightUnit(item, mContext);
         try {
@@ -74,22 +88,22 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         }
 
         nameView.setText(item.getName());
-        countView.setText(String.valueOf(item.getCount()));
-        dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(item.getAddDate()));
+        countView.setText(String.valueOf(itemInList.getCount()));
+        dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(itemInList.getAddDate()));
         if (weightUnitView.getText().equals("шт.") || weightUnitView.getText().equals("кг") || weightUnitView.getText().equals("л")){
-            priceView.setText(String.valueOf(item.getPriceForOne() * item.getCount()));
+            priceView.setText(String.valueOf(item.getPriceForOne() * itemInList.getCount()));
         }
         else {
-            priceView.setText(String.valueOf((item.getPriceForOne() / 100) * item.getCount()));
+            priceView.setText(String.valueOf((item.getPriceForOne() / 100) * itemInList.getCount()));
         }
 
         String lastDate = "";
-        String date = String.valueOf(item.getAddDate());
+        String date = String.valueOf(itemInList.getAddDate());
         int pos = position;
         if (pos != 0) {
-            item = mItems.get(pos - 1);
-            lastDate = String.valueOf(item.getAddDate());
-            item = mItems.get(pos);
+            itemInList = mItemInList.get(pos - 1);
+            lastDate = String.valueOf(itemInList.getAddDate());
+            itemInList = mItemInList.get(pos);
         }
 
         if (!date.equals(lastDate)) {
@@ -107,19 +121,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             dateView.setVisibility(View.GONE);
         }
 
-        if (item.isBought() == 1)
+        if (itemInList.isBought() == 1)
             boughtCheckBox.setChecked(true);
         else
             boughtCheckBox.setChecked(false);
 
         Button delItem = view.findViewById(R.id.list_item_delete);
-        Item finalItem = item;
+        ItemInList finalItemInList = itemInList;
 
         delItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItems.remove(position);
-                mDatabase.execSQL("DELETE FROM Item WHERE uuid = '" + finalItem.getId() + "'");
+                mItemInList.remove(position);
+                mDatabase.execSQL("DELETE FROM ItemInList WHERE uuid = '" + finalItemInList.getId() + "'");
 
                 notifyDataSetChanged();
             }
@@ -130,16 +144,16 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                    finalItem.setBought(1);
+                    finalItemInList.setBought(1);
                     mDatabase.execSQL("UPDATE Item" +
                             " SET isBought = '" + 1 +
-                            "' WHERE uuid = '" + finalItem.getId() + "'");
+                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
                 else {
-                    finalItem.setBought(0);
+                    finalItemInList.setBought(0);
                     mDatabase.execSQL("UPDATE Item" +
                             " SET isBought = '" + 0 +
-                            "' WHERE uuid = '" + finalItem.getId() + "'");
+                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
 
                 notifyDataSetChanged();
