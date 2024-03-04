@@ -58,9 +58,9 @@ public class AddItemInList extends AppCompatActivity {
 
         mItemInList = new ItemInList(UUID.randomUUID());
 
-        List<Item> mItem = itemStorage.getItems();
+        List<Item> mItems = itemStorage.getItems();
         ArrayList<String> mItemNames = new ArrayList<>();
-        for (Item item : mItem) {
+        for (Item item : mItems) {
             mItemNames.add(item.getName());
         }
         Spinner mItemName = findViewById(R.id.item_spinner);

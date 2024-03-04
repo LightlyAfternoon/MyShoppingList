@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
+import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class MainActivity extends AppCompatActivity {
 

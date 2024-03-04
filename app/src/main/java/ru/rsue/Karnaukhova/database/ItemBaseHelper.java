@@ -25,7 +25,6 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL("create table " + WeightUnitTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
                 WeightUnitTable.Cols.UUID + ", " +
@@ -41,7 +40,6 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.PRICEFORONE + ", " +
                 ItemTable.Cols.WEIGHTUNITID + ", " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
-
 
         Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
         List<WeightUnit> weightUnitsList = new ArrayList<>();
