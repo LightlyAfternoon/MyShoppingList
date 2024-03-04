@@ -16,31 +16,30 @@ import java.util.List;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 
 public class ItemAdapter extends ArrayAdapter<ItemInList> {
     LayoutInflater mInflater;
     int mLayout;
-    List<Item> mItem;
-    List<ItemInList> mItemInList;
+    List<Item> mItems;
+    List<ItemInList> mItemsInList;
     Context mContext;
     SQLiteDatabase mDatabase;
     double mCost = 0;
 
-    public ItemAdapter(Context context, int resource, List<ItemInList> itemInList) {
-        super(context, resource, itemInList);
+    public ItemAdapter(Context context, int resource, List<ItemInList> itemsInList) {
+        super(context, resource, itemsInList);
 
         mContext = context.getApplicationContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
-        mItemInList = itemInList;
+        mItemsInList = itemsInList;
         mLayout = resource;
         mInflater = LayoutInflater.from(context);
     }
 
     double sumCost(String lastDate){
-        for (ItemInList i: mItemInList) {
+        for (ItemInList i: mItemsInList) {
             if (String.valueOf(i.getAddDate()).equals(lastDate)) {
                 mCost = CountCost.CountCost(i, mCost, mContext);
             }
@@ -61,9 +60,9 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
         TextView priceView = view.findViewById(R.id.list_item_price);
         CheckBox boughtCheckBox = view.findViewById(R.id.list_item_is_bought);
 
-        ItemInList itemInList = mItemInList.get(position);
+        ItemInList itemInList = mItemsInList.get(position);
         ItemCursorWrapper cursorWrapperItem = ItemStorage.queryItem(itemInList, mContext);
-        Item item = mItem.get(position);
+        Item item = mItems.get(position);
         try {
             cursorWrapperItem.moveToFirst();
             while (!cursorWrapperItem.isAfterLast()) {
@@ -101,9 +100,9 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
         String date = String.valueOf(itemInList.getAddDate());
         int pos = position;
         if (pos != 0) {
-            itemInList = mItemInList.get(pos - 1);
+            itemInList = mItemsInList.get(pos - 1);
             lastDate = String.valueOf(itemInList.getAddDate());
-            itemInList = mItemInList.get(pos);
+            itemInList = mItemsInList.get(pos);
         }
 
         if (!date.equals(lastDate)) {
@@ -132,7 +131,7 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
         delItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemInList.remove(position);
+                mItemsInList.remove(position);
                 mDatabase.execSQL("DELETE FROM ItemInList WHERE uuid = '" + finalItemInList.getId() + "'");
 
                 notifyDataSetChanged();

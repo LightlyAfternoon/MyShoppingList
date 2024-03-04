@@ -1,11 +1,17 @@
 package ru.rsue.Karnaukhova.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import ru.rsue.Karnaukhova.ItemStorage;
+import ru.rsue.Karnaukhova.MainActivity;
+import ru.rsue.Karnaukhova.WeightUnit;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemInListTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
@@ -35,6 +41,28 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.PRICEFORONE + ", " +
                 ItemTable.Cols.WEIGHTUNITID + ", " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
+
+
+        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
+        List<WeightUnit> weightUnitsList = new ArrayList<>();
+
+        while (weightUnitCursor.moveToNext()) {
+            try {
+                int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
+                weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
+            }
+            finally {
+                weightUnitCursor.close();
+            }
+        }
+        String pcsUnitId = "";
+        for (WeightUnit unit: weightUnitsList) {
+            if (unit.getName().equals("шт."))
+                pcsUnitId = unit.getId().toString();
+        }
+
+        db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ")" +
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
