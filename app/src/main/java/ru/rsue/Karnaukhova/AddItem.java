@@ -1,5 +1,6 @@
 package ru.rsue.Karnaukhova;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -101,6 +102,9 @@ public class AddItem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mItem.setName(mItemName.getText().toString());
+                Toast toast = new Toast(AddItem.this);
+                toast.setText("Добавлено");
+                toast.show();
 
                 if (!mItemPriceForOne.getText().toString().isEmpty()) {
                     mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
@@ -118,6 +122,11 @@ public class AddItem extends AppCompatActivity {
                 } finally {
                     cursor.close();
                 }
+
+                ItemStorage.get(AddItem.this).addItem(mItem);
+
+                Intent intent = new Intent(AddItem.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

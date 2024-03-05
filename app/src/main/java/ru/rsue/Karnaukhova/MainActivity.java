@@ -1,5 +1,6 @@
 package ru.rsue.Karnaukhova;
 
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -10,12 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +25,7 @@ import ru.rsue.Karnaukhova.database.ItemDbSchema;
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton mAddItem;
+    Button addNewItemPage;
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
     ListView itemsInListView;
@@ -175,6 +171,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddItemInList.class);
+                startActivity(intent);
+            }
+        });
+
+        addNewItemPage = (Button)findViewById(R.id.add_new_item_page);
+        addNewItemPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddItem.class);
                 startActivity(intent);
             }
         });

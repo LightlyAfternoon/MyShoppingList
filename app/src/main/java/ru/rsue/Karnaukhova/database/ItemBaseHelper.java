@@ -41,26 +41,26 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.WEIGHTUNITID + ", " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
 
-        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
+        /*Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
         List<WeightUnit> weightUnitsList = new ArrayList<>();
 
         while (weightUnitCursor.moveToNext()) {
-            try {
-                int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
-                weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
-            }
-            finally {
-                weightUnitCursor.close();
-            }
+            int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
+            weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
         }
+        weightUnitCursor.close();
         String pcsUnitId = "";
         for (WeightUnit unit: weightUnitsList) {
-            if (unit.getName().equals("шт."))
-                pcsUnitId = unit.getId().toString();
+            try {
+                if (unit.getName().equals("шт."))
+                    pcsUnitId = unit.getId().toString();
+            }
+            catch (Exception ex){
+            }
         }
 
         db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ")" +
-                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");*/
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +

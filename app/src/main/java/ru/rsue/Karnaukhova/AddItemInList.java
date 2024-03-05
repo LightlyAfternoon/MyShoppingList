@@ -63,6 +63,7 @@ public class AddItemInList extends AppCompatActivity {
         for (Item item : mItems) {
             mItemNames.add(item.getName());
         }
+
         Spinner mItemName = findViewById(R.id.item_spinner);
         EditText mItemCount = findViewById(R.id.item_count);
         TextView mWeightUnit = findViewById(R.id.item_weight_unit);
@@ -86,6 +87,7 @@ public class AddItemInList extends AppCompatActivity {
 
         mItemName.setAdapter(adapter);
 
+        // don't work
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

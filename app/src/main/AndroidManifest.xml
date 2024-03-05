@@ -25,6 +25,10 @@
             android:exported="true">
 
         </activity>
+        <activity android:name=".AddItem"
+                  android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

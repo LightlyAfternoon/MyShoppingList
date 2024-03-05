@@ -39,6 +39,11 @@ public class ItemStorage {
         mDatabase.insert(ItemInListTable.NAME, null, values);
     }
 
+    public void addItem(Item item) {
+        values = getContentValues(item);
+        mDatabase.insert(ItemTable.NAME, null, values);
+    }
+
     public List<ItemInList> getItemsInList() {
         List<ItemInList> itemInLists = new ArrayList<>();
         mCursorWrapper = queryItems(null, null);
@@ -57,7 +62,7 @@ public class ItemStorage {
 
     public List<Item> getItems() {
         List<Item> items = new ArrayList<>();
-        mCursorWrapper = queryItems(null, null);
+        mCursorWrapper = queryAddedItems(null, null);
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -96,8 +101,27 @@ public class ItemStorage {
         return values;
     }
 
+    private static ContentValues getContentValues(Item item) {
+        values = new ContentValues();
+        values.put(ItemDbSchema.ItemTable.Cols.UUID, item.getId().toString());
+        values.put(ItemDbSchema.ItemTable.Cols.NAMEITEM, String.valueOf(item.getName()));
+        values.put(ItemDbSchema.ItemTable.Cols.PRICEFORONE, item.getPriceForOne());
+        values.put(ItemDbSchema.ItemTable.Cols.WEIGHTUNITID, String.valueOf(item.getWeightUnit()));
+        return values;
+    }
+
     private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
         cursor = mDatabase.query(ItemInListTable.NAME,
+                null, //Columns - null выбирает все столбцы
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null);
+        return new ItemCursorWrapper(cursor);
+    }
+    private ItemCursorWrapper queryAddedItems(String whereClause, String[] whereArgs) {
+        cursor = mDatabase.query(ItemTable.NAME,
                 null, //Columns - null выбирает все столбцы
                 whereClause,
                 whereArgs,
