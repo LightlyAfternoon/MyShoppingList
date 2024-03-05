@@ -41,7 +41,8 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.WEIGHTUNITID + ", " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
 
-        /*Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
+        // don't work
+        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
         List<WeightUnit> weightUnitsList = new ArrayList<>();
 
         while (weightUnitCursor.moveToNext()) {
@@ -60,7 +61,7 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
         }
 
         db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ")" +
-                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");*/
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
