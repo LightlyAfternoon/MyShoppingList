@@ -45,24 +45,24 @@ public class ItemStorage {
     }
 
     public List<ItemInList> getItemsInList() {
-        List<ItemInList> itemInLists = new ArrayList<>();
-        mCursorWrapper = queryItems(null, null);
+        List<ItemInList> itemsInList = new ArrayList<>();
+        mCursorWrapper = queryItemsInList(null, null);
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
-                itemInLists.add(mCursorWrapper.getItemInList());
+                itemsInList.add(mCursorWrapper.getItemInList());
                 mCursorWrapper.moveToNext();
             }
         } finally {
             mCursorWrapper.close();
         }
 
-        return itemInLists;
+        return itemsInList;
     }
 
     public List<Item> getItems() {
         List<Item> items = new ArrayList<>();
-        mCursorWrapper = queryAddedItems(null, null);
+        mCursorWrapper = queryItems(null, null);
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -110,7 +110,7 @@ public class ItemStorage {
         return values;
     }
 
-    private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
+    private ItemCursorWrapper queryItemsInList(String whereClause, String[] whereArgs) {
         cursor = mDatabase.query(ItemInListTable.NAME,
                 null, //Columns - null выбирает все столбцы
                 whereClause,
@@ -120,7 +120,7 @@ public class ItemStorage {
                 null);
         return new ItemCursorWrapper(cursor);
     }
-    private ItemCursorWrapper queryAddedItems(String whereClause, String[] whereArgs) {
+    private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
         cursor = mDatabase.query(ItemTable.NAME,
                 null, //Columns - null выбирает все столбцы
                 whereClause,
@@ -131,7 +131,7 @@ public class ItemStorage {
         return new ItemCursorWrapper(cursor);
     }
 
-    public static ItemCursorWrapper queryItem(ItemInList it, Context mContext) {
+    public static ItemCursorWrapper queryItemInList(ItemInList it, Context mContext) {
         SQLiteDatabase mDatabase;
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
         Cursor cursor = mDatabase.query(ItemDbSchema.ItemTable.NAME,

@@ -102,9 +102,6 @@ public class AddItem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mItem.setName(mItemName.getText().toString());
-                Toast toast = new Toast(AddItem.this);
-                toast.setText("Добавлено");
-                toast.show();
 
                 if (!mItemPriceForOne.getText().toString().isEmpty()) {
                     mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
@@ -124,6 +121,10 @@ public class AddItem extends AppCompatActivity {
                 }
 
                 ItemStorage.get(AddItem.this).addItem(mItem);
+
+                Toast toast = new Toast(AddItem.this);
+                toast.setText("Добавлено");
+                toast.show();
 
                 Intent intent = new Intent(AddItem.this, MainActivity.class);
                 startActivity(intent);

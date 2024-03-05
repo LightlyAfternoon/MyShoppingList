@@ -1,6 +1,7 @@
 package ru.rsue.Karnaukhova;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,11 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.List;
+import java.util.UUID;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
+import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 
 public class ItemAdapter extends ArrayAdapter<ItemInList> {
@@ -47,6 +50,17 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
         return mCost;
     }
 
+    ItemCursorWrapper queryItemWithUUID(String uuid) {
+        Cursor cursor = mDatabase.query(ItemDbSchema.ItemTable.NAME,
+                null,
+                ItemDbSchema.ItemTable.Cols.UUID + " = ?",
+                new String[]{uuid},
+                null,
+                null,
+                null);
+        return new ItemCursorWrapper(cursor);
+    }
+
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mInflater.inflate(mLayout, parent, false);
 
@@ -61,8 +75,8 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
         CheckBox boughtCheckBox = view.findViewById(R.id.list_item_is_bought);
 
         ItemInList itemInList = mItemsInList.get(position);
-        ItemCursorWrapper cursorWrapperItem = ItemStorage.queryItem(itemInList, mContext);
-        Item item = mItems.get(position);
+        ItemCursorWrapper cursorWrapperItem = queryItemWithUUID(itemInList.getItemId().toString());
+        Item item = new Item(UUID.randomUUID());
         try {
             cursorWrapperItem.moveToFirst();
             while (!cursorWrapperItem.isAfterLast()) {
@@ -144,13 +158,13 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
                 if (isChecked)
                 {
                     finalItemInList.setBought(1);
-                    mDatabase.execSQL("UPDATE Item" +
+                    mDatabase.execSQL("UPDATE ItemInList" +
                             " SET isBought = '" + 1 +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
                 else {
                     finalItemInList.setBought(0);
-                    mDatabase.execSQL("UPDATE Item" +
+                    mDatabase.execSQL("UPDATE ItemInList" +
                             " SET isBought = '" + 0 +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }

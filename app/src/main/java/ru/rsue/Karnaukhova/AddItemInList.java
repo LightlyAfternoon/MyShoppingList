@@ -33,13 +33,25 @@ public class AddItemInList extends AppCompatActivity {
     SQLiteDatabase mDatabase;
     Date date;
 
-    String item;
+    String itemName;
+    Item item;
 
     ItemCursorWrapper queryItemWithName(String name) {
         Cursor cursor = mDatabase.query(ItemDbSchema.ItemTable.NAME,
                 null,
                 ItemDbSchema.ItemTable.Cols.NAMEITEM + " = ?",
                 new String[]{name},
+                null,
+                null,
+                null);
+        return new ItemCursorWrapper(cursor);
+    }
+
+    ItemCursorWrapper queryWeightUnitWithUUID(String uuid) {
+        Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
+                null,
+                ItemDbSchema.WeightUnitTable.Cols.UUID + " = ?",
+                new String[]{uuid},
                 null,
                 null,
                 null);
@@ -87,21 +99,31 @@ public class AddItemInList extends AppCompatActivity {
 
         mItemName.setAdapter(adapter);
 
-        // don't work
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                item = (String) parent.getItemAtPosition(position);
+                itemName = (String) parent.getItemAtPosition(position);
 
-                ItemCursorWrapper cursor = queryItemWithName(item);
+                ItemCursorWrapper itemCursor = queryItemWithName(itemName);
                 try {
-                    cursor.moveToFirst();
-                    while (!cursor.isAfterLast()) {
-                        mWeightUnit.setText(cursor.getWeightUnit().getName());
-                        cursor.moveToNext();
+                    itemCursor.moveToFirst();
+                    while (!itemCursor.isAfterLast()) {
+                        item = itemCursor.getItem();
+                        itemCursor.moveToNext();
                     }
                 } finally {
-                    cursor.close();
+                    itemCursor.close();
+                }
+
+                ItemCursorWrapper weightUnitCursor = queryWeightUnitWithUUID(item.getWeightUnit().toString());
+                try {
+                    weightUnitCursor.moveToFirst();
+                    while (!weightUnitCursor.isAfterLast()) {
+                        mWeightUnit.setText(weightUnitCursor.getWeightUnit().getName());
+                        weightUnitCursor.moveToNext();
+                    }
+                } finally {
+                    weightUnitCursor.close();
                 }
             }
 
@@ -124,7 +146,7 @@ public class AddItemInList extends AppCompatActivity {
                     date = sdf.parse(mItemAddDate.getText().toString());
                     mItemInList.setAddDate(date.getTime());
 
-                    ItemCursorWrapper cursor = queryItemWithName(item);
+                    ItemCursorWrapper cursor = queryItemWithName(itemName);
                     try {
                         cursor.moveToFirst();
                         while (!cursor.isAfterLast()) {

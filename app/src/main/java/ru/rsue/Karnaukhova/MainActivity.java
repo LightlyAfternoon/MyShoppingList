@@ -65,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
-                ((TextView)parent.getChildAt(0)).setTextSize(16);
+                try {
+                    ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
+                    ((TextView)parent.getChildAt(0)).setTextSize(16);
+
+                } catch (Exception ex){}
 
                 String selectedItem = (String)parent.getItemAtPosition(position);
 
