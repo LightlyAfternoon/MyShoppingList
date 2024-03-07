@@ -12,6 +12,7 @@ import java.util.UUID;
 import ru.rsue.Karnaukhova.ItemStorage;
 import ru.rsue.Karnaukhova.MainActivity;
 import ru.rsue.Karnaukhova.WeightUnit;
+import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemInListTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
@@ -25,6 +26,18 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // whytf I need here usual id AND uuid? :/
+        db.execSQL("create table " + UserTable.NAME + "( " +
+                " _id integer primary key autoIncrement, " +
+                UserTable.Cols.UUID + ", " +
+                UserTable.Cols.LOGIN + ", " +
+                UserTable.Cols.PASSWORD + ", " +
+                UserTable.Cols.NICKNAME + ")");
+
+        db.execSQL("insert into " + UserTable.NAME + "(" + UserTable.Cols.UUID + ", " + UserTable.Cols.LOGIN + ", " + UserTable.Cols.PASSWORD + ", " + UserTable.Cols.NICKNAME + ")" +
+                " values (" + "'" + UUID.randomUUID() + "'" + ", 'Developer', " + "'1111', " + "'Разработчик'" +
+                ")");
+
         db.execSQL("create table " + WeightUnitTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
                 WeightUnitTable.Cols.UUID + ", " +

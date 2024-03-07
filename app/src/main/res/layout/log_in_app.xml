@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout android:id="@+id/log_in_layout"
+                  android:layout_above="@id/password_layout"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="10dp"
+                  android:layout_centerInParent="true">
+
+        <TextView android:layout_weight="1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Логин"
+                  android:layout_marginEnd="24dp"/>
+        <EditText android:id="@+id/log_in_edit_text"
+                  android:layout_weight="2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:minWidth="100dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/password_layout"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:padding="10dp">
+
+        <TextView android:layout_weight="1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Пароль"
+                  android:layout_marginEnd="15dp"/>
+        <EditText android:id="@+id/password_edit_text"
+                  android:layout_weight="2"
+                  android:autofillHints="password"
+                  android:inputType="textPassword"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:minWidth="100dp"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/log_in_button"
+            android:layout_below="@id/password_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Войти"
+            android:minWidth="110dp"
+            android:padding="10dp"/>
+
+    <Button android:id="@+id/sign_up_button"
+            android:layout_below="@id/log_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Регистрация"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:padding="10dp"/>
+</RelativeLayout>
