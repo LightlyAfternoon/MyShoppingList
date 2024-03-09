@@ -120,6 +120,8 @@ public class AddItem extends AppCompatActivity {
                     cursor.close();
                 }
 
+                mItem.setUserId(CurrentUser.currentUser.getUuid());
+
                 ItemStorage.get(AddItem.this).addItem(mItem);
 
                 Toast toast = new Toast(AddItem.this);

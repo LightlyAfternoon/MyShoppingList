@@ -8,6 +8,7 @@ public class Item {
     UUID mWeightUnitId;
     double mPriceForOne;
     String mColor;
+    UUID mUserId;
 
     public Item(UUID id) {
         mId = id;
@@ -37,5 +38,12 @@ public class Item {
     public String getColor() { return mColor; }
     public void setColor(String color) {
         mColor = color;
+    }
+
+    public UUID getUserId() {
+        return mUserId;
+    }
+    public void setUserId(UUID userId) {
+        this.mUserId = userId;
     }
 }

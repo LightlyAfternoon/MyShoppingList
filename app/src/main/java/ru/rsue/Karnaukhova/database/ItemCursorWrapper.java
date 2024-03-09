@@ -20,11 +20,19 @@ public class ItemCursorWrapper extends CursorWrapper {
         int count = getInt(getColumnIndex(ItemInListTable.Cols.COUNT));
         long addDate = getLong(getColumnIndex(ItemInListTable.Cols.ADDDATE));
         String itemId = getString(getColumnIndex(ItemInListTable.Cols.ITEMID));
+        String listId = getString(getColumnIndex(ItemInListTable.Cols.LISTID));
+        int quantityBought = getInt(getColumnIndex(ItemInListTable.Cols.QUANTITYBOUGHT));
+        long buyOnDate = getLong(getColumnIndex(ItemInListTable.Cols.BUYONDATE));
+        int isPriority = getInt(getColumnIndex(ItemInListTable.Cols.ISPRIORITY));
 
         ItemInList itemInList = new ItemInList(UUID.fromString(uuidItem));
         itemInList.setCount(count);
         itemInList.setAddDate(addDate);
         itemInList.setItemId(UUID.fromString(itemId));
+        itemInList.setListId(UUID.fromString(listId));
+        itemInList.setQuantityBought(quantityBought);
+        itemInList.setBuyOnDate(buyOnDate);
+        itemInList.setIsPriority(isPriority);
 
         return itemInList;
     }
@@ -35,12 +43,14 @@ public class ItemCursorWrapper extends CursorWrapper {
         String weightUnitId = getString(getColumnIndex(ItemTable.Cols.WEIGHTUNITID));
         double priceForOne = getDouble(getColumnIndex(ItemTable.Cols.PRICEFORONE));
         String color = getString(getColumnIndex(ItemTable.Cols.COLOR));
+        String userId = getString(getColumnIndex(ItemTable.Cols.USERID));
 
         Item item = new Item(UUID.fromString(uuidItem));
         item.setName(nameItem);
         item.setWeightUnit(UUID.fromString(weightUnitId));
         item.setPriceForOne(priceForOne);
         item.setColor(color);
+        item.setUserId(UUID.fromString(userId));
 
         return item;
     }

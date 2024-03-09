@@ -34,6 +34,7 @@ public class ItemDbSchema {
             public static final String WEIGHTUNITID = "weightUnitId";
             public static final String PRICEFORONE = "priceForOne";
             public static final @Nullable String COLOR = "color";
+            public static final @Nullable String USERID = "userId";
         }
     }
 

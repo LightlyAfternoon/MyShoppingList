@@ -58,6 +58,12 @@ public class AddItemInList extends AppCompatActivity {
         return new ItemCursorWrapper(cursor);
     }
 
+
+
+    //need more set
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,7 +163,7 @@ public class AddItemInList extends AppCompatActivity {
                         cursor.close();
                     }
 
-                    mItemInList.setBought(0);
+                    mItemInList.setQuantityBought(0);
 
                     ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);
 

@@ -6,8 +6,11 @@ public class ItemInList {
     UUID mId;
     int mCount;
     long mAddDate;
-    int mIsBought;
+    int mQuantityBought;
     UUID mItemId;
+    UUID mListId;
+    long mBuyOnDate;
+    int mIsPriority;
 
     public ItemInList(UUID id) {
         mId = id;
@@ -34,11 +37,11 @@ public class ItemInList {
     }
 
     public int isBought() {
-        return mIsBought;
+        return mQuantityBought;
     }
 
-    public void setBought(int bought) {
-        mIsBought = bought;
+    public void setQuantityBought(int quantityBought) {
+        mQuantityBought = quantityBought;
     }
 
     public UUID getItemId() {
@@ -47,5 +50,26 @@ public class ItemInList {
 
     public void setItemId(UUID item) {
         mItemId = item;
+    }
+
+    public UUID getListId() {
+        return mListId;
+    }
+    public void setListId(UUID listId) {
+        this.mListId = listId;
+    }
+
+    public long getBuyOnDate() {
+        return mBuyOnDate;
+    }
+    public void setBuyOnDate(long buyOnDate) {
+        this.mBuyOnDate = buyOnDate;
+    }
+
+    public int getIsPriority() {
+        return mIsPriority;
+    }
+    public void setIsPriority(int isPriority) {
+        this.mIsPriority = isPriority;
     }
 }

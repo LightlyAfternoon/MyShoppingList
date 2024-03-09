@@ -157,13 +157,13 @@ public class ItemAdapter extends ArrayAdapter<ItemInList> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                    finalItemInList.setBought(1);
+                    finalItemInList.setQuantityBought(1);
                     mDatabase.execSQL("UPDATE ItemInList" +
                             " SET isBought = '" + 1 +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
                 else {
-                    finalItemInList.setBought(0);
+                    finalItemInList.setQuantityBought(0);
                     mDatabase.execSQL("UPDATE ItemInList" +
                             " SET isBought = '" + 0 +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
