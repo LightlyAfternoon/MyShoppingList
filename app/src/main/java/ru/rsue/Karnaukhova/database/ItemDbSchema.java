@@ -17,12 +17,11 @@ public class ItemDbSchema {
             public static final String UUID = "uuid";
             public static final String COUNT = "count";
             public static final String ADDDATE = "addDate";
-            public static final String ISBOUGHT = "isBought"; //need to delete
             public static final String ITEMID = "itemId";
-            //
             public static final @Nullable String LISTID = "listId";
             public static final String QUANTITYBOUGHT = "quantityBought";
             public static final String BUYONDATE = "buyOnDate";
+            public static final String ISPRIORITY = "isPriority";
         }
     }
 
@@ -34,7 +33,6 @@ public class ItemDbSchema {
             public static final String NAMEITEM = "nameItem";
             public static final String WEIGHTUNITID = "weightUnitId";
             public static final String PRICEFORONE = "priceForOne";
-            //
             public static final @Nullable String COLOR = "color";
         }
     }

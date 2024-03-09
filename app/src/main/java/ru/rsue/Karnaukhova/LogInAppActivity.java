@@ -13,11 +13,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
+import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.UUID;
 
 public class LogInAppActivity extends AppCompatActivity {
 
@@ -51,6 +53,15 @@ public class LogInAppActivity extends AppCompatActivity {
                 cursor.close();
 
                 if (usersCount > 0) {
+                    Cursor uuidCursor = database.rawQuery("select * from " + UserTable.NAME +
+                            " where Login = '" + logInEditText.getText() + "' AND Password = '" + passwordEditText.getText() + "'", null);
+                    uuidCursor.moveToFirst();
+                    User currentUser = new ItemCursorWrapper(uuidCursor).getUser();
+                    uuidCursor.close();
+                    CurrentUser.currentUser = currentUser;
+
+                    Toast.makeText(LogInAppActivity.this, "Здравствуйте, " + CurrentUser.currentUser.getNickname(), Toast.LENGTH_LONG).show();
+
                     Intent intent = new Intent(LogInAppActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

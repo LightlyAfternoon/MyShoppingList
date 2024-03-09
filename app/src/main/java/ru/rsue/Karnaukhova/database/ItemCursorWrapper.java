@@ -7,9 +7,8 @@ import android.database.CursorWrapper;
 
 import java.util.UUID;
 
-import ru.rsue.Karnaukhova.Item;
-import ru.rsue.Karnaukhova.ItemInList;
-import ru.rsue.Karnaukhova.WeightUnit;
+import android.graphics.Color;
+import ru.rsue.Karnaukhova.*;
 
 public class ItemCursorWrapper extends CursorWrapper {
     public ItemCursorWrapper(Cursor cursor) {
@@ -20,13 +19,11 @@ public class ItemCursorWrapper extends CursorWrapper {
         String uuidItem = getString(getColumnIndex(ItemInListTable.Cols.UUID));
         int count = getInt(getColumnIndex(ItemInListTable.Cols.COUNT));
         long addDate = getLong(getColumnIndex(ItemInListTable.Cols.ADDDATE));
-        int isBought = getInt(getColumnIndex(ItemInListTable.Cols.ISBOUGHT));
         String itemId = getString(getColumnIndex(ItemInListTable.Cols.ITEMID));
 
         ItemInList itemInList = new ItemInList(UUID.fromString(uuidItem));
         itemInList.setCount(count);
         itemInList.setAddDate(addDate);
-        itemInList.setBought(isBought);
         itemInList.setItemId(UUID.fromString(itemId));
 
         return itemInList;
@@ -37,11 +34,13 @@ public class ItemCursorWrapper extends CursorWrapper {
         String nameItem = getString(getColumnIndex(ItemTable.Cols.NAMEITEM));
         String weightUnitId = getString(getColumnIndex(ItemTable.Cols.WEIGHTUNITID));
         double priceForOne = getDouble(getColumnIndex(ItemTable.Cols.PRICEFORONE));
+        String color = getString(getColumnIndex(ItemTable.Cols.COLOR));
 
         Item item = new Item(UUID.fromString(uuidItem));
         item.setName(nameItem);
         item.setWeightUnit(UUID.fromString(weightUnitId));
         item.setPriceForOne(priceForOne);
+        item.setColor(color);
 
         return item;
     }
@@ -54,5 +53,19 @@ public class ItemCursorWrapper extends CursorWrapper {
         weightUnit.setName(nameWeightUnit);
 
         return weightUnit;
+    }
+
+    public User getUser() {
+        String uuidUser = getString(getColumnIndex(UserTable.Cols.UUID));
+        String login = getString(getColumnIndex(UserTable.Cols.LOGIN));
+        String password = getString(getColumnIndex(UserTable.Cols.PASSWORD));
+        String nickname = getString(getColumnIndex(UserTable.Cols.NICKNAME));
+
+        User user = new User(UUID.fromString(uuidUser));
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setNickname(nickname);
+
+        return user;
     }
 }

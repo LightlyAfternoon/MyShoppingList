@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import ru.rsue.Karnaukhova.ItemStorage;
-import ru.rsue.Karnaukhova.MainActivity;
 import ru.rsue.Karnaukhova.WeightUnit;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemTable;
+import ru.rsue.Karnaukhova.database.ItemDbSchema.ListTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemInListTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
+import ru.rsue.Karnaukhova.database.ItemDbSchema.AllowedUserToListTable;
 
 public class ItemBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -52,6 +52,7 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.NAMEITEM + ", " +
                 ItemTable.Cols.PRICEFORONE + ", " +
                 ItemTable.Cols.WEIGHTUNITID + ", " +
+                ItemTable.Cols.COLOR + ", " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
 
         // don't work
@@ -81,9 +82,27 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemInListTable.Cols.UUID + ", " +
                 ItemInListTable.Cols.COUNT + ", " +
                 ItemInListTable.Cols.ADDDATE + ", " +
-                ItemInListTable.Cols.ISBOUGHT + ", " +
                 ItemInListTable.Cols.ITEMID + ", " +
-                "foreign key(" + ItemInListTable.Cols.ITEMID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
+                ItemInListTable.Cols.LISTID + ", " +
+                ItemInListTable.Cols.QUANTITYBOUGHT + ", " +
+                ItemInListTable.Cols.BUYONDATE + ", " +
+                ItemInListTable.Cols.ISPRIORITY + ", " +
+                "foreign key(" + ItemInListTable.Cols.ITEMID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ", " +
+                "foreign key(" + ItemInListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ")");
+
+        db.execSQL("create table " + ListTable.NAME + "(" +
+                ListTable.Cols.UUID + ", " +
+                ListTable.Cols.LISTNAME + ", " +
+                ListTable.Cols.OWNERUSERID + ", " +
+                "foreign key(" + ListTable.Cols.OWNERUSERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
+
+        db.execSQL("create table " + AllowedUserToListTable.NAME + "(" +
+                " _id integer primary key autoIncrement, " +
+                AllowedUserToListTable.Cols.UUID + ", " +
+                AllowedUserToListTable.Cols.LISTID + ", " +
+                AllowedUserToListTable.Cols.USERID + ", " +
+                "foreign key(" + AllowedUserToListTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ", " +
+                "foreign key(" + AllowedUserToListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ")");
     }
 
     @Override
