@@ -44,6 +44,11 @@ public class ItemStorage {
         mDatabase.insert(ItemTable.NAME, null, values);
     }
 
+    public void addUser(User user) {
+        values = getContentValues(user);
+        mDatabase.insert(UserTable.NAME, null, values);
+    }
+
     public List<ItemInList> getItemsInList() {
         List<ItemInList> itemsInList = new ArrayList<>();
         mCursorWrapper = queryItemsInList(null, null);
@@ -113,6 +118,15 @@ public class ItemStorage {
         values.put(ItemDbSchema.ItemTable.Cols.WEIGHTUNITID, String.valueOf(item.getWeightUnit()));
         values.put(ItemDbSchema.ItemTable.Cols.COLOR, String.valueOf(item.getColor()));
         values.put(ItemDbSchema.ItemTable.Cols.USERID, String.valueOf(item.getUserId()));
+        return values;
+    }
+
+    private static ContentValues getContentValues(User user) {
+        values = new ContentValues();
+        values.put(ItemDbSchema.UserTable.Cols.UUID, user.getId().toString());
+        values.put(ItemDbSchema.UserTable.Cols.LOGIN, String.valueOf(user.getLogin()));
+        values.put(ItemDbSchema.UserTable.Cols.PASSWORD, user.getPassword());
+        values.put(ItemDbSchema.UserTable.Cols.NICKNAME, String.valueOf(user.getNickname()));
         return values;
     }
 
