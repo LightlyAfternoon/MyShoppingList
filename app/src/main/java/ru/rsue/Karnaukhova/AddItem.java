@@ -63,7 +63,7 @@ public class AddItem extends AppCompatActivity {
         for (WeightUnit weightUnit : mWeightUnits) {
             mWeightUnitsNames.add(weightUnit.getName());
         }
-        EditText mItemName = findViewById(R.id.item_name);
+        EditText mItemNameEditText = findViewById(R.id.item_name);
         Spinner mWeightUnitSpinner = findViewById(R.id.item_weight_unit_spinner);
         EditText mItemPriceForOne = findViewById(R.id.item_price_for_one);
         Button mAddItem = findViewById(R.id.add_new_item);
@@ -101,7 +101,7 @@ public class AddItem extends AppCompatActivity {
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItem.setName(mItemName.getText().toString());
+                mItem.setName((mItemNameEditText.getText().toString()));
 
                 if (!mItemPriceForOne.getText().toString().isEmpty()) {
                     mItem.setPriceForOne(Double.parseDouble(mItemPriceForOne.getText().toString()));
@@ -120,6 +120,7 @@ public class AddItem extends AppCompatActivity {
                     cursor.close();
                 }
 
+                mItem.setColor("#D3D3D3");
                 mItem.setUserId(CurrentUser.currentUser.getUuid());
 
                 ItemStorage.get(AddItem.this).addItem(mItem);

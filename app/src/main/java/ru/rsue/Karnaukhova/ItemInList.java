@@ -36,7 +36,7 @@ public class ItemInList {
         mAddDate = addDate;
     }
 
-    public int isBought() {
+    public int getQuantityBought() {
         return mQuantityBought;
     }
 

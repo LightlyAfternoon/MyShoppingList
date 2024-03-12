@@ -46,4 +46,9 @@ public class Item {
     public void setUserId(UUID userId) {
         this.mUserId = userId;
     }
+
+    @Override
+    public String toString() {
+        return mName;
+    }
 }

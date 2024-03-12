@@ -57,6 +57,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         return new ItemCursorWrapper(cursor);
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mInflater.inflate(mLayout, parent, false);
 
@@ -136,7 +137,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             dateView.setVisibility(View.GONE);
         }
 
-        if (itemInList.isBought() == 1)
+        if (itemInList.getQuantityBought() == 1)
             boughtCheckBox.setChecked(true);
         else
             boughtCheckBox.setChecked(false);
@@ -159,15 +160,16 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
+                    // need to upgrade
                     finalItemInList.setQuantityBought(1);
                     mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET isBought = '" + 1 +
+                            " SET quantityBought = '" + finalItemInList.getCount() +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
                 else {
                     finalItemInList.setQuantityBought(0);
                     mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET isBought = '" + 0 +
+                            " SET quantityBought = '" + 0 +
                             "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
 

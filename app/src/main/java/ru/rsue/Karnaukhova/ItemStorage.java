@@ -104,7 +104,7 @@ public class ItemStorage {
         values.put(ItemInListTable.Cols.ADDDATE, String.valueOf(itemInList.getAddDate()));
         values.put(ItemInListTable.Cols.ITEMID, itemInList.getItemId().toString());
         values.put(ItemInListTable.Cols.LISTID, String.valueOf(itemInList.getListId()));
-        values.put(ItemInListTable.Cols.QUANTITYBOUGHT, String.valueOf(itemInList.isBought()));
+        values.put(ItemInListTable.Cols.QUANTITYBOUGHT, String.valueOf(itemInList.getQuantityBought()));
         values.put(ItemInListTable.Cols.BUYONDATE, String.valueOf(itemInList.getBuyOnDate()));
         values.put(ItemInListTable.Cols.ISPRIORITY, String.valueOf(itemInList.getIsPriority()));
         return values;
@@ -123,7 +123,7 @@ public class ItemStorage {
 
     private static ContentValues getContentValues(User user) {
         values = new ContentValues();
-        values.put(ItemDbSchema.UserTable.Cols.UUID, user.getId().toString());
+        values.put(ItemDbSchema.UserTable.Cols.UUID, user.getUuid().toString());
         values.put(ItemDbSchema.UserTable.Cols.LOGIN, String.valueOf(user.getLogin()));
         values.put(ItemDbSchema.UserTable.Cols.PASSWORD, user.getPassword());
         values.put(ItemDbSchema.UserTable.Cols.NICKNAME, String.valueOf(user.getNickname()));

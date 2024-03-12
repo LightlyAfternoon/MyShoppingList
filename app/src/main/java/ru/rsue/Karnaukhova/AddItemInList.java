@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,19 +26,12 @@ import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
-// for Item adapter in AddItemInList
-//@Override
-//public String toString() {
-//    return mName;
-//}
-
 public class AddItemInList extends AppCompatActivity {
     ItemInList mItemInList;
     Context mContext;
     SQLiteDatabase mDatabase;
     Date date;
 
-    String itemName;
     Item item;
 
     ItemCursorWrapper queryItemWithName(String name) {
@@ -64,13 +56,6 @@ public class AddItemInList extends AppCompatActivity {
         return new ItemCursorWrapper(cursor);
     }
 
-
-
-    //need more set
-
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +68,6 @@ public class AddItemInList extends AppCompatActivity {
 
         mItemInList = new ItemInList(UUID.randomUUID());
 
-        // don't work
         List<Item> mItems = itemStorage.getItems();
 
         Spinner mItemName = findViewById(R.id.item_spinner);
@@ -112,18 +96,7 @@ public class AddItemInList extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemName = (String) parent.getItemAtPosition(position);
-
-                ItemCursorWrapper itemCursor = queryItemWithName(itemName);
-                try {
-                    itemCursor.moveToFirst();
-                    while (!itemCursor.isAfterLast()) {
-                        item = itemCursor.getItem();
-                        itemCursor.moveToNext();
-                    }
-                } finally {
-                    itemCursor.close();
-                }
+                item = (Item) parent.getItemAtPosition(position);
 
                 ItemCursorWrapper weightUnitCursor = queryWeightUnitWithUUID(item.getWeightUnit().toString());
                 try {
@@ -155,18 +128,8 @@ public class AddItemInList extends AppCompatActivity {
                 try {
                     date = sdf.parse(mItemAddDate.getText().toString());
                     mItemInList.setAddDate(date.getTime());
-
-                    ItemCursorWrapper cursor = queryItemWithName(itemName);
-                    try {
-                        cursor.moveToFirst();
-                        while (!cursor.isAfterLast()) {
-                            mItemInList.setItemId(cursor.getItem().getId());
-                            cursor.moveToNext();
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-
+                    mItemInList.setBuyOnDate(date.getTime());
+                    mItemInList.setItemId(item.getId());
                     mItemInList.setQuantityBought(0);
 
                     ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);

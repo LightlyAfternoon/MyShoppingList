@@ -8,6 +8,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import android.graphics.Color;
+import androidx.annotation.Nullable;
 import ru.rsue.Karnaukhova.*;
 
 public class ItemCursorWrapper extends CursorWrapper {
@@ -20,7 +21,7 @@ public class ItemCursorWrapper extends CursorWrapper {
         int count = getInt(getColumnIndex(ItemInListTable.Cols.COUNT));
         long addDate = getLong(getColumnIndex(ItemInListTable.Cols.ADDDATE));
         String itemId = getString(getColumnIndex(ItemInListTable.Cols.ITEMID));
-        String listId = getString(getColumnIndex(ItemInListTable.Cols.LISTID));
+        @Nullable String listId = getString(getColumnIndex(ItemInListTable.Cols.LISTID));
         int quantityBought = getInt(getColumnIndex(ItemInListTable.Cols.QUANTITYBOUGHT));
         long buyOnDate = getLong(getColumnIndex(ItemInListTable.Cols.BUYONDATE));
         int isPriority = getInt(getColumnIndex(ItemInListTable.Cols.ISPRIORITY));
@@ -29,7 +30,12 @@ public class ItemCursorWrapper extends CursorWrapper {
         itemInList.setCount(count);
         itemInList.setAddDate(addDate);
         itemInList.setItemId(UUID.fromString(itemId));
-        itemInList.setListId(UUID.fromString(listId));
+        try {
+            itemInList.setListId(UUID.fromString(listId));
+        }
+        catch (Exception ex) {
+            itemInList.setListId(null);
+        }
         itemInList.setQuantityBought(quantityBought);
         itemInList.setBuyOnDate(buyOnDate);
         itemInList.setIsPriority(isPriority);
