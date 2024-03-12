@@ -96,8 +96,12 @@ public class ItemStorage {
         values = new ContentValues();
         values.put(ItemInListTable.Cols.UUID, itemInList.getId().toString());
         values.put(ItemInListTable.Cols.COUNT, String.valueOf(itemInList.getCount()));
-        values.put(ItemInListTable.Cols.ITEMID, itemInList.getItemId().toString());
         values.put(ItemInListTable.Cols.ADDDATE, String.valueOf(itemInList.getAddDate()));
+        values.put(ItemInListTable.Cols.ITEMID, itemInList.getItemId().toString());
+        values.put(ItemInListTable.Cols.LISTID, String.valueOf(itemInList.getListId()));
+        values.put(ItemInListTable.Cols.QUANTITYBOUGHT, String.valueOf(itemInList.isBought()));
+        values.put(ItemInListTable.Cols.BUYONDATE, String.valueOf(itemInList.getBuyOnDate()));
+        values.put(ItemInListTable.Cols.ISPRIORITY, String.valueOf(itemInList.getIsPriority()));
         return values;
     }
 
@@ -107,6 +111,8 @@ public class ItemStorage {
         values.put(ItemDbSchema.ItemTable.Cols.NAMEITEM, String.valueOf(item.getName()));
         values.put(ItemDbSchema.ItemTable.Cols.PRICEFORONE, item.getPriceForOne());
         values.put(ItemDbSchema.ItemTable.Cols.WEIGHTUNITID, String.valueOf(item.getWeightUnit()));
+        values.put(ItemDbSchema.ItemTable.Cols.COLOR, String.valueOf(item.getColor()));
+        values.put(ItemDbSchema.ItemTable.Cols.USERID, String.valueOf(item.getUserId()));
         return values;
     }
 
