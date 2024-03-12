@@ -53,29 +53,31 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemTable.Cols.PRICEFORONE + ", " +
                 ItemTable.Cols.WEIGHTUNITID + ", " +
                 ItemTable.Cols.COLOR + ", " +
-                "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ")");
+                ItemTable.Cols.USERID + ", " +
+                "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ", " +
+                "foreign key(" + ItemTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
         // don't work
-        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
-        List<WeightUnit> weightUnitsList = new ArrayList<>();
-
-        while (weightUnitCursor.moveToNext()) {
-            int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
-            weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
-        }
-        weightUnitCursor.close();
-        String pcsUnitId = "";
-        for (WeightUnit unit: weightUnitsList) {
-            try {
-                if (unit.getName().equals("шт."))
-                    pcsUnitId = unit.getId().toString();
-            }
-            catch (Exception ex){
-            }
-        }
-
-        db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ")" +
-                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");
+//        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
+//        List<WeightUnit> weightUnitsList = new ArrayList<>();
+//
+//        while (weightUnitCursor.moveToNext()) {
+//            int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
+//            weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
+//        }
+//        weightUnitCursor.close();
+//        String pcsUnitId = "";
+//        for (WeightUnit unit: weightUnitsList) {
+//            try {
+//                if (unit.getName().equals("шт."))
+//                    pcsUnitId = unit.getId().toString();
+//            }
+//            catch (Exception ex){
+//            }
+//        }
+//
+//        db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ")" +
+//                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ")");
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +

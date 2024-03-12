@@ -39,18 +39,18 @@ public class ItemCursorWrapper extends CursorWrapper {
 
     public Item getItem() {
         String uuidItem = getString(getColumnIndex(ItemTable.Cols.UUID));
-        String nameItem = getString(getColumnIndex(ItemTable.Cols.NAMEITEM));
         String weightUnitId = getString(getColumnIndex(ItemTable.Cols.WEIGHTUNITID));
         double priceForOne = getDouble(getColumnIndex(ItemTable.Cols.PRICEFORONE));
         String color = getString(getColumnIndex(ItemTable.Cols.COLOR));
         String userId = getString(getColumnIndex(ItemTable.Cols.USERID));
+        String nameItem = getString(getColumnIndex(ItemTable.Cols.NAMEITEM));
 
         Item item = new Item(UUID.fromString(uuidItem));
-        item.setName(nameItem);
         item.setWeightUnit(UUID.fromString(weightUnitId));
         item.setPriceForOne(priceForOne);
         item.setColor(color);
         item.setUserId(UUID.fromString(userId));
+        item.setName(nameItem);
 
         return item;
     }

@@ -27,6 +27,12 @@ import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
+// for Item adapter in AddItemInList
+//@Override
+//public String toString() {
+//    return mName;
+//}
+
 public class AddItemInList extends AppCompatActivity {
     ItemInList mItemInList;
     Context mContext;
@@ -64,6 +70,7 @@ public class AddItemInList extends AppCompatActivity {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +83,8 @@ public class AddItemInList extends AppCompatActivity {
 
         mItemInList = new ItemInList(UUID.randomUUID());
 
+        // don't work
         List<Item> mItems = itemStorage.getItems();
-        ArrayList<String> mItemNames = new ArrayList<>();
-        for (Item item : mItems) {
-            mItemNames.add(item.getName());
-        }
 
         Spinner mItemName = findViewById(R.id.item_spinner);
         EditText mItemCount = findViewById(R.id.item_count);
@@ -100,7 +104,7 @@ public class AddItemInList extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItemNames);
+        ArrayAdapter<Item> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mItemName.setAdapter(adapter);

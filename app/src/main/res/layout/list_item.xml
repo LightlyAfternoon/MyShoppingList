@@ -8,37 +8,54 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <View
-            android:id="@+id/sep_line1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="gone"/>
+        <View android:id="@+id/sep_line1"
+              android:layout_width="match_parent"
+              android:layout_height="2dp"
+              android:background="@android:color/darker_gray"
+              android:visibility="gone"/>
 
         <TextView android:id="@+id/list_item_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:text="10/10/2001"
-            android:visibility="gone"/>
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="16dp"
+                  android:textStyle="bold"
+                  android:layout_marginLeft="10dp"
+                  android:text="10/10/2001"
+                  android:visibility="gone"/>
 
         <TextView android:id="@+id/list_item_all_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="1050"
-            android:layout_marginLeft="270dp"
-            android:visibility="gone"/>
-        <View
-            android:id="@+id/sep_line2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="gone"/>
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="16dp"
+                  android:textStyle="bold"
+                  android:text="1050"
+                  android:layout_marginLeft="270dp"
+                  android:visibility="gone"/>
+        <View android:id="@+id/sep_line2"
+              android:layout_width="match_parent"
+              android:layout_height="2dp"
+              android:layout_marginTop="20dp"
+              android:background="@android:color/darker_gray"
+              android:visibility="gone"/>
+
+        <ImageView android:id="@+id/item_color"
+                   android:layout_width="5dp"
+                   android:layout_height="50dp"
+                   android:layout_alignParentLeft="true"
+                   android:layout_marginTop="20dp"
+                   android:layout_marginRight="5dp"
+                   android:layout_marginLeft="5dp"
+                   android:background="@color/material_dynamic_neutral_variant70"
+                   android:contentDescription="@null"/>
+
+        <Button android:id="@+id/list_item_delete"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="16dp"
+                android:text="X"/>
 
         <TextView
             android:id="@+id/list_item_name"
@@ -91,14 +108,5 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"/>
 
-        <Button android:id="@+id/list_item_delete"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="15dp"
-            android:textSize="16dp"
-            android:text="X"/>
     </RelativeLayout>
 </LinearLayout>

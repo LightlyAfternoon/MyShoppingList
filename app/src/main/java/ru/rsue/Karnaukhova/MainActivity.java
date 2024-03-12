@@ -20,7 +20,6 @@ import java.util.Comparator;
 import java.util.Date;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
     ListView itemsInListView;
-    ItemAdapter itemAdapter;
+    ItemInListAdapter itemInListAdapter;
 
     String[] mFilterChoices = {"Всё", "За день", "За месяц"};
     Spinner mSelectFilterSpinner;
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     sdf = new SimpleDateFormat("dd.MM.yyyy");
 
                     itemsDateFilter.setText(sdf.format(new Date()));
-                    itemAdapter.notifyDataSetChanged();
+                    itemInListAdapter.notifyDataSetChanged();
                 }
                 else if (selectedItem.equals("За месяц")) {
                     itemsMonthCost.setVisibility(View.VISIBLE);
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     itemsDateFilter.setText(sdf.format(new Date()));
 
                     sort();
-                    itemAdapter.notifyDataSetChanged();
+                    itemInListAdapter.notifyDataSetChanged();
                 }
                 else {
                     itemsDateFilter.setVisibility(View.GONE);
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     itemsInList.addAll(itemStorage.getItemsInList());
 
                     sort();
-                    itemAdapter.notifyDataSetChanged();
+                    itemInListAdapter.notifyDataSetChanged();
 
                 }
             }
@@ -152,13 +151,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         itemsInListView = findViewById(R.id.item_view);
-        if (itemAdapter == null) {
+        if (itemInListAdapter == null) {
             itemsInList.addAll(itemStorage.getItemsInList());
-            itemAdapter = new ItemAdapter(this, R.layout.list_item, itemsInList);
-            itemsInListView.setAdapter(itemAdapter);
+            itemInListAdapter = new ItemInListAdapter(this, R.layout.list_item, itemsInList);
+            itemsInListView.setAdapter(itemInListAdapter);
         }
         else {
-            itemAdapter.notifyDataSetChanged();
+            itemInListAdapter.notifyDataSetChanged();
         }
     }
 
