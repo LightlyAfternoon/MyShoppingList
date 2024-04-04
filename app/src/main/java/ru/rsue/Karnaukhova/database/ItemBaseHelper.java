@@ -57,7 +57,6 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
-        // don't work
         Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
         List<WeightUnit> weightUnitsList = new ArrayList<>();
 
@@ -67,10 +66,14 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
         }
         weightUnitCursor.close();
         String pcsUnitId = "";
+        //this is working
+        //String pcsUnitId = weightUnitsList.get(0).getId().toString();
         for (WeightUnit unit: weightUnitsList) {
             try {
-                if (unit.getName().contentEquals("шт."))
+                // don't work
+                if (unit.getName().equals("шт.")) {
                     pcsUnitId = unit.getId().toString();
+                }
             }
             catch (Exception ex){
             }
