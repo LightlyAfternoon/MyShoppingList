@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+        <item android:title="Item 1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+        <item android:title="Item 2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+    </group>
+</menu>

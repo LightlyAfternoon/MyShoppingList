@@ -62,7 +62,7 @@ public class LogInAppActivity extends AppCompatActivity {
 
                     Toast.makeText(LogInAppActivity.this, "Здравствуйте, " + CurrentUser.currentUser.getNickname(), Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(LogInAppActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LogInAppActivity.this, MainMenuActivity.class);
                     startActivity(intent);
                 }
                 else {

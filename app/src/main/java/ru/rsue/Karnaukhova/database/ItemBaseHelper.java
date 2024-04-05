@@ -57,21 +57,18 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
-        Cursor weightUnitCursor = db.rawQuery("select * from "+ WeightUnitTable.NAME, null);
+        ItemCursorWrapper cursor = new ItemCursorWrapper(db.rawQuery("select * from "+ WeightUnitTable.NAME, null));
         List<WeightUnit> weightUnitsList = new ArrayList<>();
 
-        while (weightUnitCursor.moveToNext()) {
-            int columnIndex = weightUnitCursor.getColumnIndex(WeightUnitTable.Cols.UUID);
-            weightUnitsList.add(new WeightUnit(UUID.fromString(weightUnitCursor.getString(columnIndex))));
+        while (cursor.moveToNext()) {
+            weightUnitsList.add(cursor.getWeightUnit());
         }
-        weightUnitCursor.close();
-        String pcsUnitId = "";
-        //this is working
-        //String pcsUnitId = weightUnitsList.get(0).getId().toString();
+        cursor.close();
+
+        String pcsUnitId = weightUnitsList.get(1).getId().toString();
         for (WeightUnit unit: weightUnitsList) {
             try {
-                // don't work
-                if (unit.getName().equals("шт.")) {
+                if (unit.getName().contains("шт.")) {
                     pcsUnitId = unit.getId().toString();
                 }
             }

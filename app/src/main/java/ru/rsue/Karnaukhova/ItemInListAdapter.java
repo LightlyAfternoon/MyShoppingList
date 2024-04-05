@@ -99,7 +99,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             cursorWrapper.close();
         }
 
-        if (!item.getColor().isBlank()) {
+        if (item.getColor() != null) {
             itemColor.setBackgroundColor(Color.parseColor(item.getColor()));
         }
 

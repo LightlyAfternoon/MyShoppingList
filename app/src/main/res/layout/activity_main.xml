@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<FrameLayout android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <fragment android:id="@+id/main_fragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:name="androidx.navigation.fragment.NavHostFragment"
+              app:defaultNavHost="true">
+<RelativeLayout android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -16,8 +23,13 @@
         android:theme="?attr/actionBarTheme"
         android:gravity="left">
 
-        <Spinner
-            android:id="@+id/filter_item_select"
+        <Button android:id="@+id/show_menu"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="\u2630"
+                android:backgroundTint="#4E3C73"/>
+
+        <Spinner android:id="@+id/filter_item_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF" />
@@ -61,5 +73,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         app:srcCompat="@android:drawable/ic_input_add"/>
-
 </RelativeLayout>
+
+    </fragment>
+</FrameLayout>
