@@ -1,5 +1,6 @@
 package ru.rsue.Karnaukhova;
 
+import android.view.Gravity;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,8 +25,9 @@ import java.util.Date;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Fragment {
 
+    Button menu;
     FloatingActionButton mAddItem;
     Button addNewItemPage;
 
@@ -48,16 +53,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        ItemStorage itemStorage = ItemStorage.get(MainActivity.this);
+        ItemStorage itemStorage = ItemStorage.get(getContext());
 
-        mContext = getApplicationContext();
+        mContext = getContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
-        mSelectFilterSpinner = findViewById(R.id.filter_item_select);
-        EditText itemsDateFilter = findViewById(R.id.items_date_filter);
-        TextView itemsMonthCost = findViewById(R.id.items_month_cost);
+        mSelectFilterSpinner = getView().findViewById(R.id.filter_item_select);
+        EditText itemsDateFilter = getView().findViewById(R.id.items_date_filter);
+        TextView itemsMonthCost = getView().findViewById(R.id.items_month_cost);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mFilterChoices);
+        ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, mFilterChoices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSelectFilterSpinner.setAdapter(adapter);
 
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        itemsInListView = findViewById(R.id.item_view);
+        itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
             itemsInList.addAll(itemStorage.getItemsInList());
             itemInListAdapter = new ItemInListAdapter(this, R.layout.list_item, itemsInList);
@@ -162,26 +167,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        return getView.get(R.layout.activity_main);
 
         updateUI();
 
-        mAddItem = (FloatingActionButton)findViewById(R.id.add_item);
+        menu = getView().findViewById(R.id.show_menu);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DrawerLayout drawerLayout = getView().findViewById(R.id.main_menu);
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        mAddItem = (FloatingActionButton)getView().findViewById(R.id.add_item);
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddItemInList.class);
+                Intent intent = new Intent(getContext(), AddItemInList.class);
                 startActivity(intent);
             }
         });
 
-        addNewItemPage = (Button)findViewById(R.id.add_new_item_page);
+        addNewItemPage = (Button)getView().findViewById(R.id.add_new_item_page);
         addNewItemPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddItem.class);
+                Intent intent = new Intent(getContext(), AddItem.class);
                 startActivity(intent);
             }
         });
