@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/main_content"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".ProductsInListHost">
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           android:background="?attr/colorPrimary"
+                                           android:minHeight="?attr/actionBarSize"
+                                           android:theme="?attr/actionBarTheme"
+                                           android:gravity="left">
+
+            <Button android:id="@+id/show_menu"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="\u2630"
+                    android:backgroundTint="#4E3C73"/>
+
+            <Spinner android:id="@+id/filter_item_select"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:backgroundTint="#FFFFFF" />
+
+            <EditText android:id="@+id/items_date_filter"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:textSize="16dp"
+                      android:textStyle="bold"
+                      android:hint="Введите дату"
+                      android:textColor="@color/white"
+                      android:visibility="gone"/>
+
+            <TextView android:id="@+id/items_month_cost"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:textSize="16dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/white"
+                      android:visibility="gone"/>
+
+            <Button android:id="@+id/add_new_item_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Новый"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ListView
+                android:id="@+id/item_view"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="65dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+    </RelativeLayout>
+</FrameLayout>
