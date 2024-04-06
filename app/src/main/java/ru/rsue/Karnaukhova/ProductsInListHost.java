@@ -27,7 +27,6 @@ import java.util.Date;
 
 public class ProductsInListHost extends Fragment {
     Button menu;
-    FloatingActionButton mAddItem;
     Button addNewItemPage;
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
@@ -168,15 +167,6 @@ public class ProductsInListHost extends Fragment {
     @Override
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mAddItem = (FloatingActionButton)view.findViewById(R.id.add_item);
-        mAddItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), AddItemInList.class);
-                startActivity(intent);
-            }
-        });
 
         addNewItemPage = (Button)view.findViewById(R.id.add_new_item_page);
         addNewItemPage.setOnClickListener(new View.OnClickListener() {

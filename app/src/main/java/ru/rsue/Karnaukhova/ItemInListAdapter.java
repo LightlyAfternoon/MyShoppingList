@@ -75,13 +75,10 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
 
         ItemInList itemInList = mItemsInList.get(position);
         ItemCursorWrapper cursorWrapperItem = queryItemWithUUID(itemInList.getItemId().toString());
-        Item item = new Item(UUID.randomUUID());
+        Item item;
         try {
             cursorWrapperItem.moveToFirst();
-            while (!cursorWrapperItem.isAfterLast()) {
-                item = (cursorWrapperItem.getItem());
-                cursorWrapperItem.moveToNext();
-            }
+            item = (cursorWrapperItem.getItem());
         }
         finally {
             cursorWrapperItem.close();

@@ -27,7 +27,7 @@
             <Spinner android:id="@+id/filter_item_select"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:backgroundTint="#FFFFFF" />
+                     android:backgroundTint="#FFFFFF"/>
 
             <EditText android:id="@+id/items_date_filter"
                       android:layout_width="wrap_content"
@@ -49,11 +49,11 @@
             <Button android:id="@+id/add_new_item_page"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Новый"/>
+                    android:text="Новый"
+                    android:visibility="gone"/>
         </androidx.appcompat.widget.Toolbar>
 
-        <ListView
-                android:id="@+id/item_view"
+        <ListView android:id="@+id/item_view"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

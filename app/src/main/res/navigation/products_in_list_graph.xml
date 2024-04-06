@@ -8,5 +8,13 @@
     <fragment android:id="@+id/productsInListHost"
               android:name="ru.rsue.Karnaukhova.ProductsInListHost"
               android:label="fragment_products_in_list_host"
-              tools:layout="@layout/fragment_products_in_list_host"/>
+              tools:layout="@layout/fragment_products_in_list_host">
+        <action android:id="@+id/action_productsInListHost_to_productsHost"
+                app:destination="@id/productsHost"/>
+    </fragment>
+
+    <fragment android:id="@+id/productsHost"
+              android:name="ru.rsue.Karnaukhova.ProductsHost"
+              android:label="fragment_products_host"
+              tools:layout="@layout/fragment_products_host"/>
 </navigation>
