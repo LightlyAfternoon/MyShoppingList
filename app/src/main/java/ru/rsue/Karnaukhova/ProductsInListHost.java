@@ -26,8 +26,8 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class ProductsInListHost extends Fragment {
+    FloatingActionButton addNewItemInListPage;
     Button menu;
-    Button addNewItemPage;
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
     ListView itemsInListView;
@@ -168,11 +168,11 @@ public class ProductsInListHost extends Fragment {
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addNewItemPage = (Button)view.findViewById(R.id.add_new_item_page);
-        addNewItemPage.setOnClickListener(new View.OnClickListener() {
+        addNewItemInListPage = view.findViewById(R.id.add_item_in_list);
+        addNewItemInListPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), AddItem.class);
+                Intent intent = new Intent(view.getContext(), AddItemInList.class);
                 startActivity(intent);
             }
         });

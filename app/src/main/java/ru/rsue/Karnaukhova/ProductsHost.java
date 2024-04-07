@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -47,11 +48,11 @@ public class ProductsHost extends Fragment {
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAddItem = (FloatingActionButton)view.findViewById(R.id.add_item);
+        mAddItem = getView().findViewById(R.id.add_product);
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), AddItemInList.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), AddItem.class);
                 startActivity(intent);
             }
         });

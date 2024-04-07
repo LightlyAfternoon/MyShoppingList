@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import androidx.fragment.app.FragmentManager;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
@@ -125,8 +126,7 @@ public class AddItem extends AppCompatActivity {
                 toast.setText("Добавлено");
                 toast.show();
 
-                Intent intent = new Intent(AddItem.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
