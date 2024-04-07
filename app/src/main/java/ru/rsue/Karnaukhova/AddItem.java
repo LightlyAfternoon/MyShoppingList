@@ -1,18 +1,11 @@
 package ru.rsue.Karnaukhova;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import androidx.fragment.app.FragmentManager;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 
-public class AddItem extends AppCompatActivity {
+public class
+
+AddItem extends AppCompatActivity {
     Item mItem;
     Context mContext;
     SQLiteDatabase mDatabase;
@@ -64,6 +58,11 @@ public class AddItem extends AppCompatActivity {
         Spinner mWeightUnitSpinner = findViewById(R.id.item_weight_unit_spinner);
         EditText mItemPriceForOne = findViewById(R.id.item_price_for_one);
         Button mAddItem = findViewById(R.id.add_new_item);
+
+        RadioButton mGrayColor = findViewById(R.id.gray_color);
+        RadioButton mBlackColor = findViewById(R.id.black_color);
+        RadioButton mGreenColor = findViewById(R.id.green_color);
+        RadioButton mBlueColor = findViewById(R.id.blue_color);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mWeightUnitsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,7 +116,26 @@ public class AddItem extends AppCompatActivity {
                     cursor.close();
                 }
 
-                mItem.setColor("#D3D3D3");
+                if (mGrayColor.isChecked())
+                {
+                    mItem.setColor("#808080");
+                }
+                else if (mBlackColor.isChecked())
+                {
+                    mItem.setColor("#000000");
+                }
+                else if (mGreenColor.isChecked())
+                {
+                    mItem.setColor("#A4C639");
+                }
+                else if (mBlueColor.isChecked())
+                {
+                    mItem.setColor("#0000FF");
+                }
+                else {
+                    mItem.setColor("#FFFFFF");
+                }
+
                 mItem.setUserId(CurrentUser.currentUser.getUuid());
 
                 ItemStorage.get(AddItem.this).addItem(mItem);
