@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
     Fragment fragment;
+    Class fragmentClass;
     @Nullable
     String id = null;
 
@@ -25,20 +26,24 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
 
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem menuItem) {
                 id = String.valueOf(menuItem.getItemId());
-
                 if (Integer.parseInt(id) == R.id.shopping_lists_select) {
-                    fragment = new ProductsInListHost();
+                    fragmentClass = ProductsInListHost.class;
                 }
                 else if (Integer.parseInt(id) == R.id.items_select) {
-                    fragment = new ProductsHost();
+                    fragmentClass = ProductsHost.class;
+                }
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 FragmentManager fragmentManager = getSupportFragmentManager();

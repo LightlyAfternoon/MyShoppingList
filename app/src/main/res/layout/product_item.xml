@@ -52,7 +52,7 @@
               android:maxWidth="40dp"
               android:layout_toLeftOf="@id/product_weight_unit"
               android:layout_marginTop="35dp"
-              android:layout_marginRight="10dp"
+              android:layout_marginRight="7dp"
               android:text="100"
               android:textSize="16dp"/>
 

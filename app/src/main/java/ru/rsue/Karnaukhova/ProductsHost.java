@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 
 public class ProductsHost extends Fragment {
     FloatingActionButton mAddItem;
+    Button menu;
 
     ArrayList<Item> items = new ArrayList<Item>();
     ListView itemsView;
@@ -54,6 +58,15 @@ public class ProductsHost extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AddItem.class);
                 startActivity(intent);
+            }
+        });
+
+        menu = view.findViewById(R.id.show_menu2);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DrawerLayout mDrawerLayout = ((MainActivity)getActivity()).mDrawerLayout;
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
 

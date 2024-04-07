@@ -1,15 +1,13 @@
 package ru.rsue.Karnaukhova;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
@@ -73,8 +71,14 @@ public class ItemAdapter extends ArrayAdapter {
         deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mItems.remove(position);
-                mDatabase.execSQL("delete from Item where uuid = '" + finalItem.getId() + "'");
+                Cursor cursor = mDatabase.rawQuery("select * from ItemInList where itemId = '" + finalItem.getId() + "'", null);
+                if (cursor.getCount() == 0) {
+                    mItems.remove(position);
+                    mDatabase.execSQL("delete from Item where uuid = '" + finalItem.getId() + "'");
+                }
+                else {
+                    Toast.makeText(getContext(), "Сперва необходимо удалить " + finalItem.getName() + " из списков", Toast.LENGTH_LONG).show();
+                }
 
                 notifyDataSetChanged();
             }

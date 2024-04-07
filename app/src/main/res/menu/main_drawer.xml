@@ -8,10 +8,13 @@
         <item android:id="@+id/shopping_lists_select"
               android:title="Списки покупок"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              android:checkable="true"/>
+
         <item android:id="@+id/items_select"
               android:title="База продуктов"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              android:checkable="true"/>
     </group>
 </menu>

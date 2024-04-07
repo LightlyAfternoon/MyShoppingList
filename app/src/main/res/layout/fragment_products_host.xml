@@ -8,6 +8,20 @@
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           android:background="?attr/colorPrimary"
+                                           android:minHeight="?attr/actionBarSize"
+                                           android:theme="?attr/actionBarTheme"
+                                           android:gravity="left">
+
+            <Button android:id="@+id/show_menu2"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="\u2630"
+                    android:backgroundTint="#4E3C73"/>
+        </androidx.appcompat.widget.Toolbar>
         <ListView android:id="@+id/product_view"
                   android:orientation="vertical"
                   android:layout_width="match_parent"
