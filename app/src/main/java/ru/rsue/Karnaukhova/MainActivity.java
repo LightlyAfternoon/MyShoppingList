@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (Integer.parseInt(id) == R.id.items_select) {
                 fragment = new ProductsHost();
-            }
+            }x
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
