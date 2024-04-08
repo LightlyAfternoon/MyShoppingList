@@ -47,7 +47,12 @@ public class ProductsInListHost extends Fragment {
             public int compare(ItemInList lhs, ItemInList rhs) {
                 return String.valueOf(rhs.getAddDate()).compareTo(String.valueOf(lhs.getAddDate()));
             }
-        });
+        }.thenComparing(new Comparator<ItemInList>() {
+            @Override
+            public int compare(ItemInList lhs, ItemInList rhs) {
+                return String.valueOf(rhs.getIsPriority()).compareTo(String.valueOf(lhs.getIsPriority()));
+            }
+        }));
     }
 
     private void updateUI() {
@@ -156,7 +161,7 @@ public class ProductsInListHost extends Fragment {
         itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
             itemsInList.addAll(itemStorage.getItemsInList());
-            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.list_item, itemsInList);
+            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
         }
         else {

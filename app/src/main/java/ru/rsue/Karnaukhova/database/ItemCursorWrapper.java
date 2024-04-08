@@ -24,7 +24,7 @@ public class ItemCursorWrapper extends CursorWrapper {
         @Nullable String listId = getString(getColumnIndex(ItemInListTable.Cols.LISTID));
         int quantityBought = getInt(getColumnIndex(ItemInListTable.Cols.QUANTITYBOUGHT));
         long buyOnDate = getLong(getColumnIndex(ItemInListTable.Cols.BUYONDATE));
-        int isPriority = getInt(getColumnIndex(ItemInListTable.Cols.ISPRIORITY));
+        boolean isPriority = Boolean.parseBoolean(getString(getColumnIndex(ItemInListTable.Cols.ISPRIORITY)));
 
         ItemInList itemInList = new ItemInList(UUID.fromString(uuidItem));
         itemInList.setCount(count);
@@ -41,6 +41,23 @@ public class ItemCursorWrapper extends CursorWrapper {
         itemInList.setIsPriority(isPriority);
 
         return itemInList;
+    }
+
+    public ItemList getItemList() {
+        String uuidList = getString(getColumnIndex(ListTable.Cols.UUID));
+        String nameList = getString(getColumnIndex(ListTable.Cols.LISTNAME));
+        @Nullable String userId = getString(getColumnIndex(ListTable.Cols.OWNERUSERID));
+
+        ItemList itemList = new ItemList(UUID.fromString(uuidList));
+        itemList.setListName(nameList);
+        try {
+            itemList.setOwnerUserId(UUID.fromString(userId));
+        }
+        catch (Exception ex) {
+            itemList.setOwnerUserId(null);
+        }
+
+        return itemList;
     }
 
     public Item getItem() {

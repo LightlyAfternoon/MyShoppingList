@@ -39,6 +39,11 @@ public class ItemStorage {
         mDatabase.insert(ItemInListTable.NAME, null, values);
     }
 
+    public void addList(ItemList list) {
+        values = getContentValues(list);
+        mDatabase.insert(ListTable.NAME, null, values);
+    }
+
     public void addItem(Item item) {
         values = getContentValues(item);
         mDatabase.insert(ItemTable.NAME, null, values);
@@ -81,6 +86,22 @@ public class ItemStorage {
         return items;
     }
 
+    public List<ItemList> getLists() {
+        List<ItemList> itemsLists = new ArrayList<>();
+        mCursorWrapper = queryItemsLists(null, null);
+        try {
+            mCursorWrapper.moveToFirst();
+            while (!mCursorWrapper.isAfterLast()) {
+                itemsLists.add(mCursorWrapper.getItemList());
+                mCursorWrapper.moveToNext();
+            }
+        } finally {
+            mCursorWrapper.close();
+        }
+
+        return itemsLists;
+    }
+
     public List<WeightUnit> getWeightUnits() {
         List<WeightUnit> weightUnits = new ArrayList<>();
         mCursorWrapper = queryAllWeightUnits(null, null);
@@ -107,6 +128,14 @@ public class ItemStorage {
         values.put(ItemInListTable.Cols.QUANTITYBOUGHT, String.valueOf(itemInList.getQuantityBought()));
         values.put(ItemInListTable.Cols.BUYONDATE, String.valueOf(itemInList.getBuyOnDate()));
         values.put(ItemInListTable.Cols.ISPRIORITY, String.valueOf(itemInList.getIsPriority()));
+        return values;
+    }
+
+    private static ContentValues getContentValues(ItemList itemList) {
+        values = new ContentValues();
+        values.put(ItemDbSchema.ListTable.Cols.UUID, itemList.getId().toString());
+        values.put(ListTable.Cols.LISTNAME, String.valueOf(itemList.getListName()));
+        values.put(ListTable.Cols.OWNERUSERID, String.valueOf(itemList.getOwnerUserId()));
         return values;
     }
 
@@ -140,8 +169,20 @@ public class ItemStorage {
                 null);
         return new ItemCursorWrapper(cursor);
     }
+
     private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
         cursor = mDatabase.query(ItemTable.NAME,
+                null, //Columns - null выбирает все столбцы
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null);
+        return new ItemCursorWrapper(cursor);
+    }
+
+    private ItemCursorWrapper queryItemsLists(String whereClause, String[] whereArgs) {
+        cursor = mDatabase.query(ListTable.NAME,
                 null, //Columns - null выбирает все столбцы
                 whereClause,
                 whereArgs,

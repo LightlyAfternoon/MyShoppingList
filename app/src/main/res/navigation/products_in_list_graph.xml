@@ -15,4 +15,9 @@
               android:name="ru.rsue.Karnaukhova.ProductsHost"
               android:label="fragment_products_host"
               tools:layout="@layout/fragment_products_host"/>
+
+    <fragment android:id="@+id/itemsListsHost"
+              android:name="ru.rsue.Karnaukhova.ItemsListsHost"
+              android:label="fragment_items_lists_host"
+              tools:layout="@layout/fragment_items_lists_host"/>
 </navigation>

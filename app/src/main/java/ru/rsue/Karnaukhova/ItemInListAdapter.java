@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,10 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         }
 
         nameView.setText(item.getName());
+        if (itemInList.getIsPriority()) {
+            nameView.setTypeface(Typeface.DEFAULT_BOLD);
+            nameView.setTextColor(Color.parseColor("#FF0000"));
+        }
         countView.setText(String.valueOf(itemInList.getCount()));
         dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(itemInList.getAddDate()));
         if (weightUnitView.getText().equals("шт.") || weightUnitView.getText().equals("кг") || weightUnitView.getText().equals("л")){

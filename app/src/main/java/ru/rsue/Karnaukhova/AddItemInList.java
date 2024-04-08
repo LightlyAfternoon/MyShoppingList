@@ -6,13 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,17 +27,6 @@ public class AddItemInList extends AppCompatActivity {
     Date date;
 
     Item item;
-
-    ItemCursorWrapper queryItemWithName(String name) {
-        Cursor cursor = mDatabase.query(ItemDbSchema.ItemTable.NAME,
-                null,
-                ItemDbSchema.ItemTable.Cols.NAMEITEM + " = ?",
-                new String[]{name},
-                null,
-                null,
-                null);
-        return new ItemCursorWrapper(cursor);
-    }
 
     ItemCursorWrapper queryWeightUnitWithUUID(String uuid) {
         Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
@@ -74,6 +57,7 @@ public class AddItemInList extends AppCompatActivity {
         EditText mItemCount = findViewById(R.id.item_count);
         TextView mWeightUnit = findViewById(R.id.item_weight_unit);
         EditText mItemAddDate = findViewById(R.id.item_add_date);
+        CheckBox mIsPriority = findViewById(R.id.is_priority);
         Button mAddItem = findViewById(R.id.add_new_item_in_list);
 
         mItemCount.setMaxWidth(100);
@@ -131,6 +115,7 @@ public class AddItemInList extends AppCompatActivity {
                     mItemInList.setBuyOnDate(date.getTime());
                     mItemInList.setItemId(item.getId());
                     mItemInList.setQuantityBought(0);
+                    mItemInList.setIsPriority(mIsPriority.isChecked());
 
                     ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);
 

@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
                 else if (Integer.parseInt(id) == R.id.items_select) {
                     fragmentClass = ProductsHost.class;
                 }
+                else if (Integer.parseInt(id) == R.id.lists_select) {
+                    fragmentClass = ItemsListsHost.class;
+                }
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                 } catch (Exception e) {
@@ -62,10 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
         if (id != null) {
             if (Integer.parseInt(id) == R.id.shopping_lists_select) {
-                fragment = new ProductsInListHost();
+                fragmentClass = ProductsInListHost.class;
             }
             else if (Integer.parseInt(id) == R.id.items_select) {
-                fragment = new ProductsHost();
+                fragmentClass = ProductsHost.class;
+            }
+            else if (Integer.parseInt(id) == R.id.lists_select) {
+                fragmentClass = ItemsListsHost.class;
+            }
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();
