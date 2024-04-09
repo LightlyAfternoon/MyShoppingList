@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +14,7 @@ import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.UUID;
-
 public class LogInAppActivity extends AppCompatActivity {
-
     SQLiteDatabase database;
     Context context;
     EditText logInEditText;
@@ -69,6 +61,14 @@ public class LogInAppActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, "Неправильный логин и/или пароль", Toast.LENGTH_LONG);
                     toast.show();
                 }
+            }
+        });
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogInAppActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }

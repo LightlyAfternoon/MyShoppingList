@@ -11,6 +11,7 @@ public class ItemInList {
     UUID mListId;
     long mBuyOnDate;
     boolean mIsPriority;
+    UUID mUserId;
 
     public ItemInList(UUID id) {
         mId = id;
@@ -67,5 +68,12 @@ public class ItemInList {
     }
     public void setIsPriority(boolean isPriority) {
         mIsPriority = isPriority;
+    }
+
+    public UUID getUserId() {
+        return mUserId;
+    }
+    public void setUserId(UUID userId) {
+        this.mUserId = userId;
     }
 }

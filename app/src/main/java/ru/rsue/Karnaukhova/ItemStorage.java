@@ -56,7 +56,7 @@ public class ItemStorage {
 
     public List<ItemInList> getItemsInList() {
         List<ItemInList> itemsInList = new ArrayList<>();
-        mCursorWrapper = queryItemsInList(null, null);
+        mCursorWrapper = queryItemsInList("userId = ?", new String[] {CurrentUser.currentUser.getUuid().toString()});
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -72,7 +72,7 @@ public class ItemStorage {
 
     public List<Item> getItems() {
         List<Item> items = new ArrayList<>();
-        mCursorWrapper = queryItems(null, null);
+        mCursorWrapper = queryItems("userId = ? OR userId IS NULL", new String[] {CurrentUser.currentUser.getUuid().toString()});
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -88,7 +88,7 @@ public class ItemStorage {
 
     public List<ItemList> getLists() {
         List<ItemList> itemsLists = new ArrayList<>();
-        mCursorWrapper = queryItemsLists(null, null);
+        mCursorWrapper = queryItemsLists("ownerUserId = ?", new String[] {CurrentUser.currentUser.getUuid().toString()});
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -128,6 +128,7 @@ public class ItemStorage {
         values.put(ItemInListTable.Cols.QUANTITYBOUGHT, String.valueOf(itemInList.getQuantityBought()));
         values.put(ItemInListTable.Cols.BUYONDATE, String.valueOf(itemInList.getBuyOnDate()));
         values.put(ItemInListTable.Cols.ISPRIORITY, String.valueOf(itemInList.getIsPriority()));
+        values.put(ItemInListTable.Cols.USERID, String.valueOf(itemInList.getUserId()));
         return values;
     }
 

@@ -116,6 +116,7 @@ public class AddItemInList extends AppCompatActivity {
                     mItemInList.setItemId(item.getId());
                     mItemInList.setQuantityBought(0);
                     mItemInList.setIsPriority(mIsPriority.isChecked());
+                    mItemInList.setUserId(CurrentUser.currentUser.getUuid());
 
                     ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);
 

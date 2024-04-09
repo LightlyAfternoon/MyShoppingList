@@ -26,7 +26,7 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // whytf I need here usual id AND uuid? :/
+
         db.execSQL("create table " + UserTable.NAME + "( " +
                 " _id integer primary key autoIncrement, " +
                 UserTable.Cols.UUID + ", " +
@@ -89,8 +89,10 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 ItemInListTable.Cols.QUANTITYBOUGHT + ", " +
                 ItemInListTable.Cols.BUYONDATE + ", " +
                 ItemInListTable.Cols.ISPRIORITY + ", " +
+                ItemInListTable.Cols.USERID + ", " +
                 "foreign key(" + ItemInListTable.Cols.ITEMID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ", " +
-                "foreign key(" + ItemInListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ")");
+                "foreign key(" + ItemInListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ", " +
+                "foreign key(" + ItemInListTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
         db.execSQL("create table " + ListTable.NAME + "(" +
                 ListTable.Cols.UUID + ", " +
