@@ -30,4 +30,9 @@ public class ItemList {
     public void setOwnerUserId(UUID ownerUserId) {
         this.mOwnerUserId = ownerUserId;
     }
+
+    @Override
+    public String toString() {
+        return mListName;
+    }
 }

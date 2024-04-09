@@ -22,7 +22,7 @@ public class ItemDbSchema {
             public static final String QUANTITYBOUGHT = "quantityBought";
             public static final String BUYONDATE = "buyOnDate";
             public static final String ISPRIORITY = "isPriority";
-            public static final @Nullable String USERID = "userId";
+            public static final String USERID = "userId";
         }
     }
 

@@ -23,7 +23,7 @@ public class ItemCursorWrapper extends CursorWrapper {
         String itemId = getString(getColumnIndex(ItemInListTable.Cols.ITEMID));
         @Nullable String listId = getString(getColumnIndex(ItemInListTable.Cols.LISTID));
         int quantityBought = getInt(getColumnIndex(ItemInListTable.Cols.QUANTITYBOUGHT));
-        long buyOnDate = getLong(getColumnIndex(ItemInListTable.Cols.BUYONDATE));
+        @Nullable long buyOnDate = getLong(getColumnIndex(ItemInListTable.Cols.BUYONDATE));
         boolean isPriority = Boolean.parseBoolean(getString(getColumnIndex(ItemInListTable.Cols.ISPRIORITY)));
         String userId = getString(getColumnIndex(ItemInListTable.Cols.USERID));
 

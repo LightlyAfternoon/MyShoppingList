@@ -103,7 +103,7 @@ public class ProductsInListHost extends Fragment {
                     itemsMonthCost.setVisibility(View.GONE);
 
                     itemsInList.clear();
-                    itemsInList.addAll(itemStorage.getItemsInList());
+                    itemsInList.addAll(itemStorage.getDailyItems());
 
                     sort();
                     itemInListAdapter.notifyDataSetChanged();
@@ -135,7 +135,7 @@ public class ProductsInListHost extends Fragment {
                 catch (ParseException e) {
                     date = new Date();
                 }
-                for (ItemInList itInL : itemStorage.getItemsInList()) {
+                for (ItemInList itInL : itemStorage.getDailyItems()) {
                     String firstDate = sdf.format(new Date(itInL.getAddDate()));
                     String secondDate = sdf.format(date);
 
@@ -160,7 +160,7 @@ public class ProductsInListHost extends Fragment {
 
         itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
-            itemsInList.addAll(itemStorage.getItemsInList());
+            itemsInList.addAll(itemStorage.getDailyItems());
             itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
         }

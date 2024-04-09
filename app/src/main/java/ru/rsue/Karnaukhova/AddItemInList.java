@@ -27,6 +27,7 @@ public class AddItemInList extends AppCompatActivity {
     Date date;
 
     Item item;
+    ItemList list;
 
     ItemCursorWrapper queryWeightUnitWithUUID(String uuid) {
         Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
@@ -52,13 +53,17 @@ public class AddItemInList extends AppCompatActivity {
         mItemInList = new ItemInList(UUID.randomUUID());
 
         List<Item> mItems = itemStorage.getItems();
+        List<ItemList> mLists = itemStorage.getLists();
 
         Spinner mItemName = findViewById(R.id.item_spinner);
         EditText mItemCount = findViewById(R.id.item_count);
         TextView mWeightUnit = findViewById(R.id.item_weight_unit);
         EditText mItemAddDate = findViewById(R.id.item_add_date);
+        Spinner mListSpinner = findViewById(R.id.list_spinner);
         CheckBox mIsPriority = findViewById(R.id.is_priority);
         Button mAddItem = findViewById(R.id.add_new_item_in_list);
+        RadioButton mRbtDate = findViewById(R.id.rbt_date);
+        RadioButton mRbtList = findViewById(R.id.rbt_list);
 
         mItemCount.setMaxWidth(100);
 
@@ -100,6 +105,43 @@ public class AddItemInList extends AppCompatActivity {
         };
         mItemName.setOnItemSelectedListener(itemSelectedListener);
 
+        ArrayAdapter<ItemList> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mLists);
+        adapterList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mListSpinner.setAdapter(adapterList);
+
+        AdapterView.OnItemSelectedListener listSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                list = (ItemList) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        };
+
+        mListSpinner.setOnItemSelectedListener(listSelectedListener);
+
+        mRbtDate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mListSpinner.setVisibility(View.GONE);
+                    mItemAddDate.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        mRbtList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mListSpinner.setVisibility(View.VISIBLE);
+                    mItemAddDate.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +155,9 @@ public class AddItemInList extends AppCompatActivity {
                     date = sdf.parse(mItemAddDate.getText().toString());
                     mItemInList.setAddDate(date.getTime());
                     mItemInList.setBuyOnDate(date.getTime());
+                    if (mRbtList.isChecked()) {
+                        mItemInList.setListId(list.getId());
+                    }
                     mItemInList.setItemId(item.getId());
                     mItemInList.setQuantityBought(0);
                     mItemInList.setIsPriority(mIsPriority.isChecked());

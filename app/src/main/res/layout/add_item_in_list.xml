@@ -31,6 +31,22 @@
             android:textSize="16dp"/>
     </LinearLayout>
 
+    <RadioGroup android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+        <RadioButton android:id="@+id/rbt_date"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Дата"
+                     android:checked="true"/>
+
+        <RadioButton android:id="@+id/rbt_list"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Список"/>
+    </RadioGroup>
+
     <EditText android:id="@+id/item_add_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,6 +54,14 @@
         android:layout_margin="10dp"
         android:text="24.10.2023"
         android:inputType="date"/>
+
+    <Spinner android:id="@+id/list_spinner"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:inputType="textCapWords"
+             android:hint="Список"
+             android:textSize="16dp"
+             android:visibility="gone"/>
 
     <CheckBox android:id="@+id/is_priority"
               android:layout_width="wrap_content"

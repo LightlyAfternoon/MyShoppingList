@@ -54,9 +54,10 @@ public class ItemStorage {
         mDatabase.insert(UserTable.NAME, null, values);
     }
 
-    public List<ItemInList> getItemsInList() {
+    public List<ItemInList> getDailyItems() {
         List<ItemInList> itemsInList = new ArrayList<>();
-        mCursorWrapper = queryItemsInList("userId = ?", new String[] {CurrentUser.currentUser.getUuid().toString()});
+        // предметы с нулевым listId записались, но ни с помощью query, ни с rawQuery в итоге не показываются в списке
+        mCursorWrapper = queryItemsInList("userId = ? AND listId IS NULL", new String[] {CurrentUser.currentUser.getUuid().toString()});
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
