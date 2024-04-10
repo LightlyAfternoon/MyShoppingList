@@ -6,9 +6,9 @@
             app:startDestination="@id/productsInListHost">
 
     <fragment android:id="@+id/productsInListHost"
-              android:name="ru.rsue.Karnaukhova.ProductsInListHost"
+              android:name="ru.rsue.Karnaukhova.DailyProductsHost"
               android:label="fragment_products_in_list_host"
-              tools:layout="@layout/fragment_products_in_list_host">
+              tools:layout="@layout/fragment_daily_products_host">
     </fragment>
 
     <fragment android:id="@+id/productsHost"
@@ -20,4 +20,9 @@
               android:name="ru.rsue.Karnaukhova.ItemsListsHost"
               android:label="fragment_items_lists_host"
               tools:layout="@layout/fragment_items_lists_host"/>
+
+    <fragment android:id="@+id/listsPurchasesHost"
+              android:name="ru.rsue.Karnaukhova.ListsPurchasesHost"
+              android:label="fragment_lists_purchases_host"
+              tools:layout="@layout/fragment_lists_purchases_host"/>
 </navigation>

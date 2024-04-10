@@ -34,14 +34,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem menuItem) {
                 id = String.valueOf(menuItem.getItemId());
-                if (Integer.parseInt(id) == R.id.shopping_lists_select) {
-                    fragmentClass = ProductsInListHost.class;
+                if (Integer.parseInt(id) == R.id.daily_purchases_select) {
+                    fragmentClass = DailyProductsHost.class;
                 }
                 else if (Integer.parseInt(id) == R.id.items_select) {
                     fragmentClass = ProductsHost.class;
                 }
                 else if (Integer.parseInt(id) == R.id.lists_select) {
                     fragmentClass = ItemsListsHost.class;
+                }
+                else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
+                    fragmentClass = ListsPurchasesHost.class;
                 }
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
@@ -64,14 +67,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (id != null) {
-            if (Integer.parseInt(id) == R.id.shopping_lists_select) {
-                fragmentClass = ProductsInListHost.class;
+            if (Integer.parseInt(id) == R.id.daily_purchases_select) {
+                fragmentClass = DailyProductsHost.class;
             }
             else if (Integer.parseInt(id) == R.id.items_select) {
                 fragmentClass = ProductsHost.class;
             }
             else if (Integer.parseInt(id) == R.id.lists_select) {
                 fragmentClass = ItemsListsHost.class;
+            }
+            else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
+                fragmentClass = ListsPurchasesHost.class;
             }
             try {
                 fragment = (Fragment) fragmentClass.newInstance();

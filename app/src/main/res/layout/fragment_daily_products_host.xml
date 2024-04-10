@@ -5,7 +5,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".ProductsInListHost">
+             tools:context=".DailyProductsHost">
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -21,8 +21,8 @@
             <Button android:id="@+id/show_menu"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:text="\u2630"
-                    android:backgroundTint="#4E3C73"/>
+                    android:textSize="20dp"
+                    android:text="\u2630"/>
 
             <Spinner android:id="@+id/filter_item_select"
                      android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_marginTop="65dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_item_in_list"
+                android:id="@+id/add_daily_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

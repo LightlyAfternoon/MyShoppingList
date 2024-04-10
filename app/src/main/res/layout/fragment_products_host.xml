@@ -19,8 +19,8 @@
             <Button android:id="@+id/show_menu2"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:text="\u2630"
-                    android:backgroundTint="#4E3C73"/>
+                    android:textSize="20dp"
+                    android:text="\u2630"/>
         </androidx.appcompat.widget.Toolbar>
         <ListView android:id="@+id/product_view"
                   android:orientation="vertical"

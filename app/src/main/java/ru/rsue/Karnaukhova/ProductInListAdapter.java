@@ -9,17 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-
-import java.text.DateFormat;
-import java.util.List;
-import java.util.UUID;
-
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 
-public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
+import java.text.DateFormat;
+import java.util.List;
+
+public class ProductInListAdapter extends ArrayAdapter<ItemInList> {
     LayoutInflater mInflater;
     int mLayout;
     List<ItemInList> mItemsInList;
@@ -27,7 +25,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
     SQLiteDatabase mDatabase;
     double mCost = 0;
 
-    public ItemInListAdapter(Context context, int resource, List<ItemInList> itemsInList) {
+    public ProductInListAdapter(Context context, int resource, List<ItemInList> itemsInList) {
         super(context, resource, itemsInList);
 
         mContext = context.getApplicationContext();
@@ -38,9 +36,9 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         mInflater = LayoutInflater.from(context);
     }
 
-    double sumCost(String lastDate){
+    double sumCost(String lastList){
         for (ItemInList i: mItemsInList) {
-            if (String.valueOf(i.getAddDate()).equals(lastDate)) {
+            if (String.valueOf(i.getListId()).equals(lastList)) {
                 mCost = CountCost.CountCost(i, mCost, mContext);
             }
         }
@@ -58,21 +56,32 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         return new ItemCursorWrapper(cursor);
     }
 
+    ItemCursorWrapper queryListWithUUID(String uuid) {
+        Cursor cursor = mDatabase.query(ItemDbSchema.ListTable.NAME,
+                null,
+                ItemDbSchema.ListTable.Cols.UUID + " = ?",
+                new String[]{uuid},
+                null,
+                null,
+                null);
+        return new ItemCursorWrapper(cursor);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = mInflater.inflate(mLayout, parent, false);
 
-        ImageView itemColor = view.findViewById(R.id.item_color);
+        ImageView itemColor = view.findViewById(R.id.product_list_color);
 
-        View sepLine = view.findViewById(R.id.sep_line2);
-        TextView allCost = view.findViewById(R.id.list_item_all_cost);
-        View sepLine1 = view.findViewById(R.id.sep_line1);
-        TextView nameView = view.findViewById(R.id.list_item_name);
-        TextView dateView = view.findViewById(R.id.list_item_date);
-        TextView countView = view.findViewById(R.id.list_item_count);
-        TextView weightUnitView = view.findViewById(R.id.list_item_weight_unit);
-        TextView priceView = view.findViewById(R.id.list_item_price);
-        CheckBox boughtCheckBox = view.findViewById(R.id.list_item_is_bought);
+        View sepLine = view.findViewById(R.id.sep_line3);
+        TextView allCost = view.findViewById(R.id.product_list_all_cost);
+        View sepLine1 = view.findViewById(R.id.sep_line4);
+        TextView nameView = view.findViewById(R.id.product_list_name);
+        TextView listView = view.findViewById(R.id.product_list);
+        TextView countView = view.findViewById(R.id.product_list_count);
+        TextView weightUnitView = view.findViewById(R.id.product_list_weight_unit);
+        TextView priceView = view.findViewById(R.id.product_list_price);
+        CheckBox boughtCheckBox = view.findViewById(R.id.product_list_is_bought);
 
         ItemInList itemInList = mItemsInList.get(position);
         ItemCursorWrapper cursorWrapperItem = queryItemWithUUID(itemInList.getItemId().toString());
@@ -81,6 +90,17 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         try {
             cursorWrapperItem.moveToFirst();
             item = (cursorWrapperItem.getItem());
+        }
+        finally {
+            cursorWrapperItem.close();
+        }
+
+        ItemList list;
+        try {
+            ItemCursorWrapper listCursorWrapper = queryListWithUUID(itemInList.getListId().toString());
+            listCursorWrapper.moveToFirst();
+            list = (listCursorWrapper.getItemList());
+            listCursorWrapper.close();
         }
         finally {
             cursorWrapperItem.close();
@@ -108,7 +128,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             nameView.setTextColor(Color.parseColor("#FF0000"));
         }
         countView.setText(String.valueOf(itemInList.getCount()));
-        dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(itemInList.getAddDate()));
+        listView.setText(list.getListName());
         if (weightUnitView.getText().equals("шт.") || weightUnitView.getText().equals("кг") || weightUnitView.getText().equals("л")){
             priceView.setText(String.valueOf(item.getPriceForOne() * itemInList.getCount()));
         }
@@ -116,28 +136,28 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             priceView.setText(String.valueOf((item.getPriceForOne() / 100) * itemInList.getCount()));
         }
 
-        String lastDate = "";
-        String date = String.valueOf(itemInList.getAddDate());
+        String lastList = "";
+        String listId = String.valueOf(itemInList.getListId());
         int pos = position;
         if (pos != 0) {
             itemInList = mItemsInList.get(pos - 1);
-            lastDate = String.valueOf(itemInList.getAddDate());
+            lastList = String.valueOf(itemInList.getListId());
             itemInList = mItemsInList.get(pos);
         }
 
-        if (!date.equals(lastDate)) {
+        if (!listId.equals(lastList)) {
             mCost = 0;
-            allCost.setText(String.valueOf(sumCost(date)));
+            allCost.setText(String.valueOf(sumCost(listId)));
             sepLine.setVisibility(View.VISIBLE);
             allCost.setVisibility(View.VISIBLE);
             sepLine1.setVisibility(View.VISIBLE);
-            dateView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.VISIBLE);
         }
         else {
             sepLine.setVisibility(View.GONE);
             allCost.setVisibility(View.GONE);
             sepLine1.setVisibility(View.GONE);
-            dateView.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
         }
 
         if (itemInList.getQuantityBought() > 0)
@@ -145,7 +165,7 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         else
             boughtCheckBox.setChecked(false);
 
-        Button delItem = view.findViewById(R.id.list_item_delete);
+        Button delItem = view.findViewById(R.id.product_list_item_delete);
         ItemInList finalItemInList = itemInList;
 
         delItem.setOnClickListener(new View.OnClickListener() {
@@ -164,16 +184,16 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
                 if (isChecked)
                 {
                     // need to upgrade
-                    finalItemInList.setQuantityBought(1);
+                    finalItemInList.setQuantityBought(finalItemInList.getCount());
                     mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought = " + finalItemInList.getCount() +
-                            " WHERE uuid = '" + finalItemInList.getId() + "'");
+                            " SET quantityBought = '" + finalItemInList.getCount() +
+                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
                 else {
                     finalItemInList.setQuantityBought(0);
                     mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought =  0" +
-                            " WHERE uuid = '" + finalItemInList.getId() + "'");
+                            " SET quantityBought = '" + 0 +
+                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
                 }
 
                 notifyDataSetChanged();

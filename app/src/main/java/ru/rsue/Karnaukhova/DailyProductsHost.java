@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class ProductsInListHost extends Fragment {
+public class DailyProductsHost extends Fragment {
     FloatingActionButton addNewItemInListPage;
     Button menu;
 
@@ -161,7 +161,7 @@ public class ProductsInListHost extends Fragment {
         itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
             itemsInList.addAll(itemStorage.getDailyItems());
-            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
+            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.daily_product_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
         }
         else {
@@ -173,7 +173,7 @@ public class ProductsInListHost extends Fragment {
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addNewItemInListPage = view.findViewById(R.id.add_item_in_list);
+        addNewItemInListPage = view.findViewById(R.id.add_daily_item);
         addNewItemInListPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,6 +198,6 @@ public class ProductsInListHost extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_products_in_list_host, container, false);
+        return inflater.inflate(R.layout.fragment_daily_products_host, container, false);
     }
 }

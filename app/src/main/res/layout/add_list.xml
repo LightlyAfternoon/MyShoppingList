@@ -12,17 +12,10 @@
               android:hint="Название списка"
               android:textSize="16dp"/>
 
-    <EditText android:id="@+id/list_add_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="5"
-        android:layout_margin="10dp"
-        android:text="24.10.2023"
-        android:inputType="date"/>
-
     <Button android:id="@+id/add_new_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+            android:layout_margin="10dp"
         android:text="Добавить"
         android:textSize="16dp"/>
 </LinearLayout>
