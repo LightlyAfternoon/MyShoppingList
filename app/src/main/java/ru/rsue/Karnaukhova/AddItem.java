@@ -63,6 +63,10 @@ AddItem extends AppCompatActivity {
         RadioButton mBlackColor = findViewById(R.id.black_color);
         RadioButton mGreenColor = findViewById(R.id.green_color);
         RadioButton mBlueColor = findViewById(R.id.blue_color);
+        RadioButton mRedColor = findViewById(R.id.red_color);
+        RadioButton mPurpleColor = findViewById(R.id.purple_color);
+        RadioButton mYellowColor = findViewById(R.id.yellow_color);
+        RadioButton mOrangeColor = findViewById(R.id.orange_color);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mWeightUnitsNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -131,6 +135,22 @@ AddItem extends AppCompatActivity {
                 else if (mBlueColor.isChecked())
                 {
                     mItem.setColor("#0000FF");
+                }
+                else if (mRedColor.isChecked())
+                {
+                    mItem.setColor("#FF0000");
+                }
+                else if (mPurpleColor.isChecked())
+                {
+                    mItem.setColor("#800080");
+                }
+                else if (mYellowColor.isChecked())
+                {
+                    mItem.setColor("#FFFF00");
+                }
+                else if (mOrangeColor.isChecked())
+                {
+                    mItem.setColor("#FFA500");
                 }
                 else {
                     mItem.setColor("#FFFFFF");

@@ -65,19 +65,21 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        String pcsUnitId = weightUnitsList.get(1).getId().toString();
-        for (WeightUnit unit: weightUnitsList) {
-            try {
-                if (unit.getName().contains("шт.")) {
-                    pcsUnitId = unit.getId().toString();
-                }
-            }
-            catch (Exception ex){
-            }
-        }
+        String kgUnitId = weightUnitsList.get(1).getId().toString();
+        String gUnitId = weightUnitsList.get(3).getId().toString();
+        String lUnitId = weightUnitsList.get(2).getId().toString();
 
         db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ", " + ItemTable.Cols.COLOR + ")" +
-                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Тарелка', '94', " + "'" + pcsUnitId + "'" + ", '#FFFFFF'" + ")");
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Картофель', '16', " + "'" + kgUnitId + "'" + ", '#FFFF00'" + ")," +
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Морковь', '42', " + "'" + kgUnitId + "'" + ", '#FFA500'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Лук', '31', " + "'" + kgUnitId + "'" + ", '#808080'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Чеснок', '26', " + "'" + gUnitId + "'" + ", '#808080'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Петрушка', '90', " + "'" + gUnitId + "'" + ", '#A4C639'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Укроп', '45', " + "'" + gUnitId + "'" + ", '#A4C639'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Яблоко', '95', " + "'" + kgUnitId + "'" + ", '#FF0000'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Банан', '131', " + "'" + kgUnitId + "'" + ", '#FFFF00'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Лимон', '105', " + "'" + kgUnitId + "'" + ", '#FFFF00'" + "),"+
+                "(" + "'" + UUID.randomUUID() + "'" + ", 'Молоко', '75', " + "'" + lUnitId + "'" + ", '#FFFFFF'" + ")");
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 " _id integer primary key autoIncrement, " +
