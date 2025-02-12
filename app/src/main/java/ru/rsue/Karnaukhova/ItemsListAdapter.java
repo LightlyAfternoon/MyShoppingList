@@ -3,14 +3,12 @@ package ru.rsue.Karnaukhova;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
+import ru.rsue.Karnaukhova.entity.ItemList;
 
 import java.util.List;
 

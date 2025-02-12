@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
+import ru.rsue.Karnaukhova.entity.ItemInList;
+import ru.rsue.Karnaukhova.repository.ItemStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;

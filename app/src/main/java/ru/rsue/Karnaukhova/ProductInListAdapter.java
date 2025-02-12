@@ -13,8 +13,10 @@ import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
+import ru.rsue.Karnaukhova.entity.Item;
+import ru.rsue.Karnaukhova.entity.ItemInList;
+import ru.rsue.Karnaukhova.entity.ItemList;
 
-import java.text.DateFormat;
 import java.util.List;
 
 public class ProductInListAdapter extends ArrayAdapter<ItemInList> {

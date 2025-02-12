@@ -13,6 +13,7 @@ import android.os.Bundle;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
+import ru.rsue.Karnaukhova.entity.User;
 
 public class LogInAppActivity extends AppCompatActivity {
     SQLiteDatabase database;

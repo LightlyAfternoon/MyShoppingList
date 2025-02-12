@@ -1,7 +1,6 @@
 package ru.rsue.Karnaukhova.database;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import ru.rsue.Karnaukhova.WeightUnit;
+import ru.rsue.Karnaukhova.entity.WeightUnit;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ItemTable;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.ListTable;

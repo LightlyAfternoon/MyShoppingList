@@ -1,18 +1,15 @@
 package ru.rsue.Karnaukhova;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
+import ru.rsue.Karnaukhova.entity.ItemList;
+import ru.rsue.Karnaukhova.repository.ItemStorage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class

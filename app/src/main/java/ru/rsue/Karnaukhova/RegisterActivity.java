@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
+import ru.rsue.Karnaukhova.entity.User;
+import ru.rsue.Karnaukhova.repository.ItemStorage;
 
 import java.util.UUID;
 

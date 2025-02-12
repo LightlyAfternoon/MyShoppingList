@@ -7,9 +7,8 @@ import android.database.CursorWrapper;
 
 import java.util.UUID;
 
-import android.graphics.Color;
 import androidx.annotation.Nullable;
-import ru.rsue.Karnaukhova.*;
+import ru.rsue.Karnaukhova.entity.*;
 
 public class ItemCursorWrapper extends CursorWrapper {
     public ItemCursorWrapper(Cursor cursor) {
