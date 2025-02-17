@@ -12,6 +12,8 @@ import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.Item;
+import ru.rsue.Karnaukhova.entity.WeightUnit;
+import ru.rsue.Karnaukhova.repository.WeightUnitRepository;
 
 import java.util.List;
 
@@ -52,14 +54,8 @@ public class ItemAdapter extends ArrayAdapter {
         }
         nameProduct.setText(item.getName());
         pricePerOneMeasureProduct.setText(item.getPriceForOne() + " за");
-        ItemCursorWrapper cursorWrapper = QueryWeightUnit.queryWeightUnit(item, mContext);
-        try {
-            cursorWrapper.moveToFirst();
-            weightUnitProduct.setText(cursorWrapper.getString(cursorWrapper.getColumnIndex(ItemDbSchema.WeightUnitTable.Cols.NAMEWEIGHTUNIT)));
-        }
-        finally {
-            cursorWrapper.close();
-        }
+        WeightUnit weightUnit = WeightUnitRepository.get(mContext).getWeightUnitOfItem(item);
+        weightUnitProduct.setText(weightUnit.getName());
         if (weightUnitProduct.getText().equals("шт.") || weightUnitProduct.getText().equals("кг") || weightUnitProduct.getText().equals("л")) {
             countMeasureProduct.setText("1");
         }

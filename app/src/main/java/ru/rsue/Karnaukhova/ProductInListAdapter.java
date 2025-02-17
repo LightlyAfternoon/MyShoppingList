@@ -16,6 +16,8 @@ import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.entity.ItemList;
+import ru.rsue.Karnaukhova.entity.WeightUnit;
+import ru.rsue.Karnaukhova.repository.WeightUnitRepository;
 
 import java.util.List;
 
@@ -108,17 +110,8 @@ public class ProductInListAdapter extends ArrayAdapter<ItemInList> {
             cursorWrapperItem.close();
         }
 
-        ItemCursorWrapper cursorWrapper = QueryWeightUnit.queryWeightUnit(item, mContext);
-        try {
-            cursorWrapper.moveToFirst();
-            while (!cursorWrapper.isAfterLast()) {
-                weightUnitView.setText(cursorWrapper.getString(cursorWrapper.getColumnIndex(WeightUnitTable.Cols.NAMEWEIGHTUNIT)));
-                cursorWrapper.moveToNext();
-            }
-        }
-        finally {
-            cursorWrapper.close();
-        }
+        WeightUnit weightUnit = WeightUnitRepository.get(mContext).getWeightUnitOfItem(item);
+        weightUnitView.setText(weightUnit.getName());
 
         if (item.getColor() != null) {
             itemColor.setBackgroundColor(Color.parseColor(item.getColor()));
