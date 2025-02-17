@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemInList;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ItemInListRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,7 +58,7 @@ public class DailyProductsHost extends Fragment {
     }
 
     private void updateUI() {
-        ItemStorage itemStorage = ItemStorage.get(getContext());
+        ItemInListRepository itemInListRepository = ItemInListRepository.get(getContext());
 
         mContext = getContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
@@ -105,7 +105,7 @@ public class DailyProductsHost extends Fragment {
                     itemsMonthCost.setVisibility(View.GONE);
 
                     itemsInList.clear();
-                    itemsInList.addAll(itemStorage.getDailyItems());
+                    itemsInList.addAll(itemInListRepository.getDailyItems());
 
                     sort();
                     itemInListAdapter.notifyDataSetChanged();
@@ -137,7 +137,7 @@ public class DailyProductsHost extends Fragment {
                 catch (ParseException e) {
                     date = new Date();
                 }
-                for (ItemInList itInL : itemStorage.getDailyItems()) {
+                for (ItemInList itInL : itemInListRepository.getDailyItems()) {
                     String firstDate = sdf.format(new Date(itInL.getAddDate()));
                     String secondDate = sdf.format(date);
 
@@ -162,7 +162,7 @@ public class DailyProductsHost extends Fragment {
 
         itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
-            itemsInList.addAll(itemStorage.getDailyItems());
+            itemsInList.addAll(itemInListRepository.getDailyItems());
             itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.daily_product_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
         }

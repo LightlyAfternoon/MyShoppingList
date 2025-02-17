@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemList;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ListRepository;
 
 import java.util.ArrayList;
 
@@ -32,14 +32,14 @@ public class ItemsListsHost extends Fragment {
     SQLiteDatabase mDatabase;
 
     private void updateUI() {
-        ItemStorage itemStorage = ItemStorage.get(getContext());
+        ListRepository listRepository = ListRepository.get(getContext());
 
         mContext = getContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
         itemsListsView = getView().findViewById(R.id.list_view);
         if (listAdapter == null) {
-            lists.addAll(itemStorage.getLists());
+            lists.addAll(listRepository.getLists());
             listAdapter = new ItemsListAdapter(getContext(), R.layout.list_item, lists);
             itemsListsView.setAdapter(listAdapter);
         }

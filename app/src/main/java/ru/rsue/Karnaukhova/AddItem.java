@@ -18,7 +18,8 @@ import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.WeightUnit;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ItemRepository;
+import ru.rsue.Karnaukhova.repository.WeightUnitRepository;
 
 public class
 
@@ -48,11 +49,11 @@ AddItem extends AppCompatActivity {
         mContext = getApplicationContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
-        ItemStorage itemStorage = ItemStorage.get(AddItem.this);
+        WeightUnitRepository weightUnitRepository = WeightUnitRepository.get(AddItem.this);
 
         mItem = new Item(UUID.randomUUID());
 
-        List<WeightUnit> mWeightUnits = itemStorage.getWeightUnits();
+        List<WeightUnit> mWeightUnits = weightUnitRepository.getWeightUnits();
         ArrayList<String> mWeightUnitsNames = new ArrayList<>();
         for (WeightUnit weightUnit : mWeightUnits) {
             mWeightUnitsNames.add(weightUnit.getName());
@@ -161,7 +162,7 @@ AddItem extends AppCompatActivity {
 
                 mItem.setUserId(CurrentUser.currentUser.getUuid());
 
-                ItemStorage.get(AddItem.this).addItem(mItem);
+                ItemRepository.get(AddItem.this).addItem(mItem);
 
                 Toast toast = new Toast(AddItem.this);
                 toast.setText("Добавлено");

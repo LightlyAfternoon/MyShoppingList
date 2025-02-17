@@ -12,7 +12,7 @@ import android.os.Bundle;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.User;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.UserRepository;
 
 import java.util.UUID;
 
@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                     newUser.setPassword(edTxtPassword.getText().toString());
                     newUser.setNickname(edTxtNickName.getText().toString());
 
-                    ItemStorage.get(RegisterActivity.this).addUser(newUser);
+                    UserRepository.get(RegisterActivity.this).addUser(newUser);
 
                     Toast toast = new Toast(RegisterActivity.this);
                     toast.setText("Вы успешно зарегистрированны!");

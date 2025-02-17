@@ -8,7 +8,7 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemList;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ListRepository;
 
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ AddList extends AppCompatActivity {
 
                 mList.setOwnerUserId(CurrentUser.currentUser.getUuid());
 
-                ItemStorage.get(AddList.this).addList(mList);
+                ListRepository.get(AddList.this).addList(mList);
 
                 Toast toast = new Toast(AddList.this);
                 toast.setText("Добавлено");

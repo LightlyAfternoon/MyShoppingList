@@ -22,7 +22,9 @@ import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.entity.ItemList;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ItemInListRepository;
+import ru.rsue.Karnaukhova.repository.ItemRepository;
+import ru.rsue.Karnaukhova.repository.ListRepository;
 
 public class AddItemInList extends AppCompatActivity {
     ItemInList mItemInList;
@@ -52,12 +54,13 @@ public class AddItemInList extends AppCompatActivity {
         mContext = getApplicationContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
-        ItemStorage itemStorage = ItemStorage.get(AddItemInList.this);
+        ItemRepository itemRepository = ItemRepository.get(AddItemInList.this);
+        ListRepository listRepository = ListRepository.get(AddItemInList.this);
 
         mItemInList = new ItemInList(UUID.randomUUID());
 
-        List<Item> mItems = itemStorage.getItems();
-        List<ItemList> mLists = itemStorage.getLists();
+        List<Item> mItems = itemRepository.getItems();
+        List<ItemList> mLists = listRepository.getLists();
 
         Spinner mItemName = findViewById(R.id.item_spinner);
         EditText mItemCount = findViewById(R.id.item_count);
@@ -167,7 +170,7 @@ public class AddItemInList extends AppCompatActivity {
                     mItemInList.setIsPriority(mIsPriority.isChecked());
                     mItemInList.setUserId(CurrentUser.currentUser.getUuid());
 
-                    ItemStorage.get(AddItemInList.this).addItemInList(mItemInList);
+                    ItemInListRepository.get(AddItemInList.this).addItemInList(mItemInList);
 
                     Intent intent = new Intent(AddItemInList.this, MainActivity.class);
                     startActivity(intent);

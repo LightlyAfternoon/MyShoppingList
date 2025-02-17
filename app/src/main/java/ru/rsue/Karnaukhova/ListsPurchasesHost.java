@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemInList;
-import ru.rsue.Karnaukhova.repository.ItemStorage;
+import ru.rsue.Karnaukhova.repository.ItemInListRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,14 +47,14 @@ public class ListsPurchasesHost extends Fragment {
     }
 
     private void updateUI() {
-        ItemStorage itemStorage = ItemStorage.get(getContext());
+        ItemInListRepository itemInListRepository = ItemInListRepository.get(getContext());
 
         mContext = getContext();
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
         itemsInListView = getView().findViewById(R.id.item_list_view);
         if (itemInListAdapter == null) {
-            itemsInList.addAll(itemStorage.getListsItems());
+            itemsInList.addAll(itemInListRepository.getListsItems());
             itemInListAdapter = new ProductInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
 
