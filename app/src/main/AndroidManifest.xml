@@ -13,10 +13,10 @@
             android:theme="@style/Theme.MyShoppingList"
             tools:targetApi="31">
         <activity
-                android:name=".RegisterActivity"
+                android:name=".activity.RegisterActivity"
                 android:exported="false"/>
         <activity
-                android:name=".LogInAppActivity"
+                android:name=".activity.LogInAppActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -29,15 +29,15 @@
                 android:exported="true">
         </activity>
         <activity
-                android:name=".AddItemInList"
+                android:name=".activity.AddItemInList"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".AddList"
+                android:name=".activity.AddList"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".AddItem"
+                android:name=".activity.AddItem"
                 android:exported="true">
         </activity>
     </application>

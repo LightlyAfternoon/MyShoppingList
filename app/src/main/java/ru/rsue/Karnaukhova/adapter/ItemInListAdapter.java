@@ -1,4 +1,4 @@
-package ru.rsue.Karnaukhova;
+package ru.rsue.Karnaukhova.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,10 +13,11 @@ import android.widget.*;
 import java.text.DateFormat;
 import java.util.List;
 
+import ru.rsue.Karnaukhova.CountCost;
+import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
-import ru.rsue.Karnaukhova.database.ItemDbSchema.WeightUnitTable;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.entity.WeightUnit;

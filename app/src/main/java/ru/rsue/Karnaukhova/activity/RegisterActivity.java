@@ -1,4 +1,4 @@
-package ru.rsue.Karnaukhova;
+package ru.rsue.Karnaukhova.activity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.User;

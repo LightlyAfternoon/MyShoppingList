@@ -1,4 +1,4 @@
-package ru.rsue.Karnaukhova;
+package ru.rsue.Karnaukhova.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import ru.rsue.Karnaukhova.CurrentUser;
+import ru.rsue.Karnaukhova.MainActivity;
+import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;

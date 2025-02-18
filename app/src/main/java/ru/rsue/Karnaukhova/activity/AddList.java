@@ -1,4 +1,4 @@
-package ru.rsue.Karnaukhova;
+package ru.rsue.Karnaukhova.activity;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import ru.rsue.Karnaukhova.CurrentUser;
+import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemList;
 import ru.rsue.Karnaukhova.repository.ListRepository;

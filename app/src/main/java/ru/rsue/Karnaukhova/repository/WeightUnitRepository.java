@@ -36,10 +36,7 @@ public class WeightUnitRepository {
         mCursorWrapper = queryWeightUnit(it);
         try {
             mCursorWrapper.moveToFirst();
-            while (!mCursorWrapper.isAfterLast()) {
-                weightUnit = mCursorWrapper.getWeightUnit();
-                mCursorWrapper.moveToNext();
-            }
+            weightUnit = mCursorWrapper.getWeightUnit();
         } finally {
             mCursorWrapper.close();
         }
@@ -76,7 +73,7 @@ public class WeightUnitRepository {
 
     private ItemCursorWrapper queryWeightUnit(Item it) {
         Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
-                new String[]{ItemDbSchema.WeightUnitTable.Cols.NAMEWEIGHTUNIT},
+                null,
                 ItemDbSchema.WeightUnitTable.Cols.UUID + " = ?",
                 new String[]{it.getWeightUnit().toString()},
                 null,

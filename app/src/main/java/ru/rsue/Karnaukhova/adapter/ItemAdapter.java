@@ -1,4 +1,4 @@
-package ru.rsue.Karnaukhova;
+package ru.rsue.Karnaukhova.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,9 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.WeightUnit;
 import ru.rsue.Karnaukhova.repository.WeightUnitRepository;
