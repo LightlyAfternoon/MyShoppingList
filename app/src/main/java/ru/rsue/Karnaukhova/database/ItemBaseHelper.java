@@ -27,32 +27,29 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("create table " + UserTable.NAME + "( " +
-                " _id integer primary key autoIncrement, " +
-                UserTable.Cols.UUID + ", " +
-                UserTable.Cols.LOGIN + ", " +
-                UserTable.Cols.PASSWORD + ", " +
-                UserTable.Cols.NICKNAME + ")");
+                UserTable.Cols.UUID + " text primary key, " +
+                UserTable.Cols.LOGIN + " text not null, " +
+                UserTable.Cols.PASSWORD + " text not null, " +
+                UserTable.Cols.NICKNAME + " text not null)");
 
         db.execSQL("insert into " + UserTable.NAME + "(" + UserTable.Cols.UUID + ", " + UserTable.Cols.LOGIN + ", " + UserTable.Cols.PASSWORD + ", " + UserTable.Cols.NICKNAME + ")" +
                 " values (" + "'" + UUID.randomUUID() + "'" + ", 'Developer', " + "'1111', " + "'Разработчик'" +
                 ")");
 
         db.execSQL("create table " + WeightUnitTable.NAME + "(" +
-                " _id integer primary key autoIncrement, " +
-                WeightUnitTable.Cols.UUID + ", " +
-                WeightUnitTable.Cols.NAMEWEIGHTUNIT + ")");
+                WeightUnitTable.Cols.UUID + " text primary key, " +
+                WeightUnitTable.Cols.NAMEWEIGHTUNIT + " text not null)");
 
         db.execSQL("INSERT INTO " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ", " + WeightUnitTable.Cols.NAMEWEIGHTUNIT + ")" +
                 " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'шт.'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'кг'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'л'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'г'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'мл')");
 
         db.execSQL("create table " + ItemTable.NAME + "(" +
-                " _id integer primary key autoIncrement, " +
-                ItemTable.Cols.UUID + ", " +
-                ItemTable.Cols.NAMEITEM + ", " +
-                ItemTable.Cols.PRICEFORONE + ", " +
-                ItemTable.Cols.WEIGHTUNITID + ", " +
-                ItemTable.Cols.COLOR + ", " +
-                ItemTable.Cols.USERID + ", " +
+                ItemTable.Cols.UUID + " text primary key, " +
+                ItemTable.Cols.NAMEITEM + " text not null, " +
+                ItemTable.Cols.PRICEFORONE + " real not null, " +
+                ItemTable.Cols.WEIGHTUNITID + " text not null, " +
+                ItemTable.Cols.COLOR + " text not null, " +
+                ItemTable.Cols.USERID + " text not null, " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
@@ -81,31 +78,29 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 "(" + "'" + UUID.randomUUID() + "'" + ", 'Молоко', '75', " + "'" + lUnitId + "'" + ", '#FFFFFF'" + ")");
 
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
-                " _id integer primary key autoIncrement, " +
-                ItemInListTable.Cols.UUID + ", " +
-                ItemInListTable.Cols.COUNT + ", " +
-                ItemInListTable.Cols.ADDDATE + ", " +
-                ItemInListTable.Cols.ITEMID + ", " +
-                ItemInListTable.Cols.LISTID + ", " +
-                ItemInListTable.Cols.QUANTITYBOUGHT + ", " +
-                ItemInListTable.Cols.BUYONDATE + ", " +
-                ItemInListTable.Cols.ISPRIORITY + ", " +
-                ItemInListTable.Cols.USERID + ", " +
+                ItemInListTable.Cols.UUID + " text primary key, " +
+                ItemInListTable.Cols.COUNT + " integer not null, " +
+                ItemInListTable.Cols.ADDDATE + " real not null, " +
+                ItemInListTable.Cols.ITEMID + " text not null, " +
+                ItemInListTable.Cols.LISTID + " text, " +
+                ItemInListTable.Cols.QUANTITYBOUGHT + " text not null, " +
+                ItemInListTable.Cols.BUYONDATE + " real, " +
+                ItemInListTable.Cols.ISPRIORITY + " integer not null check(" + ItemInListTable.Cols.ISPRIORITY + " in ('0', '1')), " +
+                ItemInListTable.Cols.USERID + " text not null, " +
                 "foreign key(" + ItemInListTable.Cols.ITEMID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemInListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemInListTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
         db.execSQL("create table " + ListTable.NAME + "(" +
-                ListTable.Cols.UUID + ", " +
-                ListTable.Cols.LISTNAME + ", " +
-                ListTable.Cols.OWNERUSERID + ", " +
+                ListTable.Cols.UUID + " text primary key, " +
+                ListTable.Cols.LISTNAME + " text not null, " +
+                ListTable.Cols.OWNERUSERID + " text not null, " +
                 "foreign key(" + ListTable.Cols.OWNERUSERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
         db.execSQL("create table " + AllowedUserToListTable.NAME + "(" +
-                " _id integer primary key autoIncrement, " +
-                AllowedUserToListTable.Cols.UUID + ", " +
-                AllowedUserToListTable.Cols.LISTID + ", " +
-                AllowedUserToListTable.Cols.USERID + ", " +
+                AllowedUserToListTable.Cols.UUID + " text primary key, " +
+                AllowedUserToListTable.Cols.LISTID + " text not null, " +
+                AllowedUserToListTable.Cols.USERID + " text not null, " +
                 "foreign key(" + AllowedUserToListTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + AllowedUserToListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ")");
     }

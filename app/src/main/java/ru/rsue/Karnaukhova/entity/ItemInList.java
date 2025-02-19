@@ -4,9 +4,9 @@ import java.util.UUID;
 
 public class ItemInList {
     UUID mId;
-    int mCount;
+    float mCount;
     long mAddDate;
-    int mQuantityBought;
+    float mQuantityBought;
     UUID mItemId;
     UUID mListId;
     long mBuyOnDate;
@@ -21,10 +21,10 @@ public class ItemInList {
         return mId;
     }
 
-    public int getCount() {
+    public float getCount() {
         return mCount;
     }
-    public void setCount(int count) {
+    public void setCount(float count) {
         mCount = count;
     }
 
@@ -35,10 +35,10 @@ public class ItemInList {
         mAddDate = addDate;
     }
 
-    public int getQuantityBought() {
+    public float getQuantityBought() {
         return mQuantityBought;
     }
-    public void setQuantityBought(int quantityBought) {
+    public void setQuantityBought(float quantityBought) {
         mQuantityBought = quantityBought;
     }
 

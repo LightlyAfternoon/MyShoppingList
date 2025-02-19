@@ -51,6 +51,7 @@ public class AddItemInList extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item_in_list);
 
@@ -82,7 +83,6 @@ public class AddItemInList extends AppCompatActivity {
 
         try {
             date = sdf.parse(mItemAddDate.getText().toString());
-            mItemInList.setAddDate(date.getTime());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -156,20 +156,21 @@ public class AddItemInList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!mItemCount.getText().toString().isEmpty()) {
-                    mItemInList.setCount(Integer.parseInt(mItemCount.getText().toString()));
+                    mItemInList.setCount(Float.parseFloat(mItemCount.getText().toString()));
                 } else {
-                    mItemInList.setCount(1);
+                    mItemInList.setCount(1f);
                 }
 
                 try {
                     date = sdf.parse(mItemAddDate.getText().toString());
-                    mItemInList.setAddDate(date.getTime());
-                    mItemInList.setBuyOnDate(date.getTime());
+                    mItemInList.setAddDate(new Date().getTime());
                     if (mRbtList.isChecked()) {
                         mItemInList.setListId(list.getId());
+                    } else {
+                        mItemInList.setBuyOnDate(date.getTime());
                     }
                     mItemInList.setItemId(item.getId());
-                    mItemInList.setQuantityBought(0);
+                    mItemInList.setQuantityBought(0f);
                     mItemInList.setIsPriority(mIsPriority.isChecked());
                     mItemInList.setUserId(CurrentUser.currentUser.getUuid());
 

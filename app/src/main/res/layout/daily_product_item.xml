@@ -15,7 +15,7 @@
                   android:textSize="16dp"
                   android:textStyle="bold"
                   android:layout_marginLeft="10dp"
-                  android:text="10/10/2001"
+                  android:text="10.10.2001"
                   android:visibility="gone"/>
 
         <TextView android:id="@+id/list_item_all_cost"

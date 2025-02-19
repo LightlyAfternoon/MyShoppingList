@@ -26,7 +26,7 @@ public class ItemsListsHost extends Fragment {
     FloatingActionButton mAddList;
     Button menu;
 
-    ArrayList<ItemList> lists = new ArrayList<ItemList>();
+    ArrayList<ItemList> lists = new ArrayList<>();
     ListView itemsListsView;
     ItemsListAdapter listAdapter;
 
