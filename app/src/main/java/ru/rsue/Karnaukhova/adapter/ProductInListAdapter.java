@@ -1,14 +1,19 @@
 package ru.rsue.Karnaukhova.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import ru.rsue.Karnaukhova.CountCost;
 import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
@@ -123,7 +128,20 @@ public class ProductInListAdapter extends ArrayAdapter<ItemInList> {
             nameView.setTypeface(Typeface.DEFAULT_BOLD);
             nameView.setTextColor(Color.parseColor("#FF0000"));
         }
-        countView.setText(String.valueOf(itemInList.getCount()));
+        if (itemInList.getQuantityBought() >= itemInList.getCount()) {
+            nameView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            nameView.setTextColor(Color.parseColor("#696969"));
+        }
+        if (itemInList.getCount() == (int) itemInList.getCount()) {
+            countView.setText(String.valueOf((int) itemInList.getCount()));
+        } else {
+            countView.setText(String.valueOf(itemInList.getCount()));
+        }
+        if (itemInList.getCount() == (int) itemInList.getCount()) {
+            countView.setText(String.valueOf((int) itemInList.getCount()));
+        } else {
+            countView.setText(String.valueOf(itemInList.getCount()));
+        }
         listView.setText(list.getListName());
         if (weightUnitView.getText().equals("шт.") || weightUnitView.getText().equals("кг") || weightUnitView.getText().equals("л")){
             priceView.setText(String.valueOf(item.getPriceForOne() * itemInList.getCount()));
@@ -156,10 +174,11 @@ public class ProductInListAdapter extends ArrayAdapter<ItemInList> {
             listView.setVisibility(View.GONE);
         }
 
-        if (itemInList.getQuantityBought() > 0)
+        if (itemInList.getQuantityBought() >= itemInList.getCount()) {
             boughtCheckBox.setChecked(true);
-        else
+        } else {
             boughtCheckBox.setChecked(false);
+        }
 
         Button delItem = view.findViewById(R.id.product_list_item_delete);
         ItemInList finalItemInList = itemInList;
@@ -177,24 +196,34 @@ public class ProductInListAdapter extends ArrayAdapter<ItemInList> {
         boughtCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    // need to upgrade
-                    finalItemInList.setQuantityBought(finalItemInList.getCount());
-                    mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought = '" + finalItemInList.getCount() +
-                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
+                View view = mInflater.inflate(R.layout.count_bought_items, null);
+                TextInputEditText textInputEditText = view.findViewById(R.id.count_bought_items_edit_text);
+                if (finalItemInList.getQuantityBought() == 0) {
+                    textInputEditText.setText(String.valueOf(finalItemInList.getCount()));
+                } else {
+                    textInputEditText.setText(String.valueOf(finalItemInList.getQuantityBought()));
                 }
-                else {
-                    finalItemInList.setQuantityBought(0);
-                    mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought = '" + 0 +
-                            "' WHERE uuid = '" + finalItemInList.getId() + "'");
-                }
+                AlertDialog alertDialog = new MaterialAlertDialogBuilder(getContext()).setView(view).setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {if (textInputEditText.getText() != null && !textInputEditText.getText().toString().isEmpty() && Float.parseFloat(textInputEditText.getText().toString()) > 0) {
+                        finalItemInList.setQuantityBought(Float.parseFloat(textInputEditText.getText().toString()));
+                    } else {
+                        finalItemInList.setQuantityBought(0);
+                    }
+                        mDatabase.execSQL("UPDATE ItemInList" +
+                                " SET quantityBought = " + finalItemInList.getQuantityBought() +
+                                " WHERE uuid = '" + finalItemInList.getId() + "'");
 
-                notifyDataSetChanged();
+                        notifyDataSetChanged();
+
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+
+                alertDialog.show();
             }
         });
+
         return view;
     }
 }

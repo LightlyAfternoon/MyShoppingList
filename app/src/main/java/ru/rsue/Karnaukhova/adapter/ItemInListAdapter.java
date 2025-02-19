@@ -1,9 +1,11 @@
 package ru.rsue.Karnaukhova.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.*;
 import java.text.DateFormat;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import ru.rsue.Karnaukhova.CountCost;
 import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
@@ -102,8 +107,25 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             nameView.setTypeface(Typeface.DEFAULT_BOLD);
             nameView.setTextColor(Color.parseColor("#FF0000"));
         }
-        countView.setText(String.valueOf(itemInList.getCount()));
-        dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(itemInList.getAddDate()));
+        if (itemInList.getQuantityBought() >= itemInList.getCount()) {
+            nameView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            nameView.setTextColor(Color.parseColor("#696969"));
+        }
+        String count = "";
+        if (itemInList.getQuantityBought() > 0) {
+            if (itemInList.getQuantityBought() == (int) itemInList.getQuantityBought()) {
+                count += (int) itemInList.getQuantityBought() + "\n" + "--" + "\n";
+            } else {
+                count += itemInList.getQuantityBought() + "\n" + "--" + "\n";
+            }
+        }
+        if (itemInList.getCount() == (int) itemInList.getCount()) {
+            count += (int) itemInList.getCount();
+        } else {
+            count += itemInList.getCount();
+        }
+        countView.setText(count);
+        dateView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(itemInList.getBuyOnDate()));
         if (weightUnitView.getText().equals("шт.") || weightUnitView.getText().equals("кг") || weightUnitView.getText().equals("л")){
             priceView.setText(String.valueOf(item.getPriceForOne() * itemInList.getCount()));
         }
@@ -112,11 +134,11 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         }
 
         String lastDate = "";
-        String date = String.valueOf(itemInList.getAddDate());
+        String date = String.valueOf(itemInList.getBuyOnDate());
         int pos = position;
         if (pos != 0) {
             itemInList = mItemsInList.get(pos - 1);
-            lastDate = String.valueOf(itemInList.getAddDate());
+            lastDate = String.valueOf(itemInList.getBuyOnDate());
             itemInList = mItemsInList.get(pos);
         }
 
@@ -135,10 +157,11 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
             dateView.setVisibility(View.GONE);
         }
 
-        if (itemInList.getQuantityBought() > 0)
+        if (itemInList.getQuantityBought() >= itemInList.getCount()) {
             boughtCheckBox.setChecked(true);
-        else
+        } else {
             boughtCheckBox.setChecked(false);
+        }
 
         Button delItem = view.findViewById(R.id.list_item_delete);
         ItemInList finalItemInList = itemInList;
@@ -156,24 +179,34 @@ public class ItemInListAdapter extends ArrayAdapter<ItemInList> {
         boughtCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    // need to upgrade
-                    finalItemInList.setQuantityBought(1);
-                    mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought = " + finalItemInList.getCount() +
-                            " WHERE uuid = '" + finalItemInList.getId() + "'");
+                View view = mInflater.inflate(R.layout.count_bought_items, null);
+                TextInputEditText textInputEditText = view.findViewById(R.id.count_bought_items_edit_text);
+                if (finalItemInList.getQuantityBought() == 0) {
+                    textInputEditText.setText(String.valueOf(finalItemInList.getCount()));
+                } else {
+                    textInputEditText.setText(String.valueOf(finalItemInList.getQuantityBought()));
                 }
-                else {
-                    finalItemInList.setQuantityBought(0);
-                    mDatabase.execSQL("UPDATE ItemInList" +
-                            " SET quantityBought =  0" +
-                            " WHERE uuid = '" + finalItemInList.getId() + "'");
-                }
+                AlertDialog alertDialog = new MaterialAlertDialogBuilder(getContext()).setView(view).setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {if (textInputEditText.getText() != null && !textInputEditText.getText().toString().isEmpty() && Float.parseFloat(textInputEditText.getText().toString()) > 0) {
+                        finalItemInList.setQuantityBought(Float.parseFloat(textInputEditText.getText().toString()));
+                    } else {
+                        finalItemInList.setQuantityBought(0);
+                    }
+                        mDatabase.execSQL("UPDATE ItemInList" +
+                                " SET quantityBought = " + finalItemInList.getQuantityBought() +
+                                " WHERE uuid = '" + finalItemInList.getId() + "'");
 
-                notifyDataSetChanged();
+                        notifyDataSetChanged();
+
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+
+                alertDialog.show();
             }
         });
+
         return view;
     }
 }

@@ -163,7 +163,7 @@ public class AddItemInList extends AppCompatActivity {
 
                 try {
                     date = sdf.parse(mItemAddDate.getText().toString());
-                    mItemInList.setAddDate(new Date().getTime());
+                    mItemInList.setAddDate(sdf.parse(sdf.format(new Date().getTime())).getTime());
                     if (mRbtList.isChecked()) {
                         mItemInList.setListId(list.getId());
                     } else {

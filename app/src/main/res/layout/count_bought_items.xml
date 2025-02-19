@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите кол-во купленных у.е."
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp">
+
+        <com.google.android.material.textfield.TextInputEditText android:id="@+id/count_bought_items_edit_text"
+                                                                 android:layout_width="match_parent"
+                                                                 android:layout_height="wrap_content"
+                                                                 android:inputType="numberDecimal"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</RelativeLayout>
