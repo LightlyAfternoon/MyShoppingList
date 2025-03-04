@@ -119,7 +119,7 @@ AddItem extends AppCompatActivity {
                 try {
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
-                        mItem.setWeightUnit(cursor.getWeightUnit().getId());
+                        mItem.setWeightUnit(cursor.getWeightUnit().getUuid());
                         cursor.moveToNext();
                     }
                 } finally {
@@ -166,9 +166,7 @@ AddItem extends AppCompatActivity {
 
                 ItemRepository.get(AddItem.this).addItem(mItem);
 
-                Toast toast = new Toast(AddItem.this);
-                toast.setText("Добавлено");
-                toast.show();
+                Toast.makeText(AddItem.this, "Добавлено", Toast.LENGTH_SHORT).show();
 
                 finish();
             }

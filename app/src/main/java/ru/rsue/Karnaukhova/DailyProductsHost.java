@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.activity.AddItemInList;
-import ru.rsue.Karnaukhova.adapter.ItemInListAdapter;
+import ru.rsue.Karnaukhova.adapter.ItemOnDateAdapter;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.repository.ItemInListRepository;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 public class DailyProductsHost extends Fragment {
     FloatingActionButton addNewItemInListPage;
@@ -35,7 +37,7 @@ public class DailyProductsHost extends Fragment {
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
     ListView itemsInListView;
-    ItemInListAdapter itemInListAdapter;
+    ItemOnDateAdapter itemInListAdapter;
 
     String[] mFilterChoices = {"Всё", "За день", "За месяц"};
     Spinner mSelectFilterSpinner;
@@ -107,7 +109,12 @@ public class DailyProductsHost extends Fragment {
                     itemsMonthCost.setVisibility(View.GONE);
 
                     itemsInList.clear();
-                    itemsInList.addAll(itemInListRepository.getDailyItems());
+                    try {
+                        itemsInList.addAll(Executors.newSingleThreadExecutor().submit(itemInListRepository::getDailyItems).get());
+                    } catch (ExecutionException | InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
 
                     sort();
                     itemInListAdapter.notifyDataSetChanged();
@@ -139,18 +146,23 @@ public class DailyProductsHost extends Fragment {
                 catch (ParseException e) {
                     date = new Date();
                 }
-                for (ItemInList itInL : itemInListRepository.getDailyItems()) {
-                    String firstDate = sdf.format(new Date(itInL.getAddDate()));
-                    String secondDate = sdf.format(date);
+                try {
+                    for (ItemInList itInL : Executors.newSingleThreadExecutor().submit(itemInListRepository::getDailyItems).get()) {
+                        String firstDate = sdf.format(new Date(itInL.getAddDate()));
+                        String secondDate = sdf.format(date);
 
-                    try {
-                        if (sdf.parse(firstDate).equals(sdf.parse(secondDate))) {
-                            itemsInList.add(itInL);
-                            monthCost = CountCost.CountCost(itInL, monthCost, mContext);
+                        try {
+                            if (sdf.parse(firstDate).equals(sdf.parse(secondDate))) {
+                                itemsInList.add(itInL);
+                                monthCost = CountCost.CountCost(itInL, monthCost, mContext);
+                            }
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
                     }
+                } catch (ExecutionException | InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
                 }
 
                 itemsMonthCost.setText(String.valueOf(monthCost));
@@ -164,8 +176,13 @@ public class DailyProductsHost extends Fragment {
 
         itemsInListView = getView().findViewById(R.id.item_view);
         if (itemInListAdapter == null) {
-            itemsInList.addAll(itemInListRepository.getDailyItems());
-            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.daily_product_item, itemsInList);
+            try {
+                itemsInList.addAll(Executors.newSingleThreadExecutor().submit(itemInListRepository::getDailyItems).get());
+            } catch (ExecutionException | InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+            itemInListAdapter = new ItemOnDateAdapter(getContext(), R.layout.daily_product_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
         }
         else {

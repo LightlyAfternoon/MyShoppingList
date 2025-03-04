@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
+import ru.rsue.Karnaukhova.database.ItemDbSchema;
 import ru.rsue.Karnaukhova.entity.ItemList;
 
 import java.util.List;
@@ -47,10 +48,12 @@ public class ItemsListAdapter extends ArrayAdapter {
         deleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cursor cursor = mDatabase.rawQuery("select * from ItemInList where listId = '" + finalList.getId() + "'", null);
+                Cursor cursor = mDatabase.rawQuery("select * from " + ItemDbSchema.ItemInListTable.NAME +
+                        " where " + ItemDbSchema.ItemInListTable.Cols.LISTID + " = '" + finalList.getUuid() + "'", null);
                 if (cursor.getCount() == 0) {
                     mItemsLists.remove(position);
-                    mDatabase.execSQL("delete from List where uuid = '" + finalList.getId() + "'");
+                    mDatabase.execSQL("delete from " + ItemDbSchema.ListTable.NAME +
+                            " where " + ItemDbSchema.ListTable.Cols.UUID + " = '" + finalList.getUuid() + "'");
                 }
                 else {
                     Toast.makeText(getContext(), "Сперва необходимо удалить всё из списка", Toast.LENGTH_LONG).show();

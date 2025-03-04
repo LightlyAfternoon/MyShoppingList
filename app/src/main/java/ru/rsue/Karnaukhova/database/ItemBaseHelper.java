@@ -18,7 +18,7 @@ import ru.rsue.Karnaukhova.database.ItemDbSchema.AllowedUserToListTable;
 
 public class ItemBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
-    private static final String DATABASE_NAME = "itemBase.db";
+    private static final String DATABASE_NAME = "item_base.db";
     public ItemBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
@@ -41,15 +41,19 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 WeightUnitTable.Cols.NAMEWEIGHTUNIT + " text not null)");
 
         db.execSQL("INSERT INTO " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ", " + WeightUnitTable.Cols.NAMEWEIGHTUNIT + ")" +
-                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'шт.'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'кг'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'л'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'г'), " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'мл')");
+                " VALUES " + "(" + "'" + UUID.randomUUID() + "'" +  ", 'шт.'), " +
+                "(" + "'" + UUID.randomUUID() + "'" +  ", 'кг'), " +
+                "(" + "'" + UUID.randomUUID() + "'" +  ", 'л'), " +
+                "(" + "'" + UUID.randomUUID() + "'" +  ", 'г'), " +
+                "(" + "'" + UUID.randomUUID() + "'" +  ", 'мл')");
 
         db.execSQL("create table " + ItemTable.NAME + "(" +
                 ItemTable.Cols.UUID + " text primary key, " +
                 ItemTable.Cols.NAMEITEM + " text not null, " +
                 ItemTable.Cols.PRICEFORONE + " real not null, " +
                 ItemTable.Cols.WEIGHTUNITID + " text not null, " +
-                ItemTable.Cols.COLOR + " text not null, " +
-                ItemTable.Cols.USERID + " text not null, " +
+                ItemTable.Cols.COLOR + " text, " +
+                ItemTable.Cols.USERID + " text, " +
                 "foreign key(" + ItemTable.Cols.WEIGHTUNITID + ") references " + WeightUnitTable.NAME + "(" + WeightUnitTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
@@ -61,9 +65,9 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        String kgUnitId = weightUnitsList.get(1).getId().toString();
-        String gUnitId = weightUnitsList.get(3).getId().toString();
-        String lUnitId = weightUnitsList.get(2).getId().toString();
+        String kgUnitId = weightUnitsList.get(1).getUuid().toString();
+        String gUnitId = weightUnitsList.get(3).getUuid().toString();
+        String lUnitId = weightUnitsList.get(2).getUuid().toString();
 
         db.execSQL("INSERT INTO " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ", " + ItemTable.Cols.NAMEITEM + ", " + ItemTable.Cols.PRICEFORONE + ", " + ItemTable.Cols.WEIGHTUNITID + ", " + ItemTable.Cols.COLOR + ")" +
                 " VALUES " + "(" + "'" + UUID.randomUUID() + "'" + ", 'Картофель', '16', " + "'" + kgUnitId + "'" + ", '#FFFF00'" + ")," +
@@ -77,25 +81,25 @@ public class ItemBaseHelper extends SQLiteOpenHelper {
                 "(" + "'" + UUID.randomUUID() + "'" + ", 'Лимон', '105', " + "'" + kgUnitId + "'" + ", '#FFFF00'" + "),"+
                 "(" + "'" + UUID.randomUUID() + "'" + ", 'Молоко', '75', " + "'" + lUnitId + "'" + ", '#FFFFFF'" + ")");
 
+        db.execSQL("create table " + ListTable.NAME + "(" +
+                ListTable.Cols.UUID + " text primary key, " +
+                ListTable.Cols.LISTNAME + " text not null, " +
+                ListTable.Cols.OWNERUSERID + " text not null, " +
+                "foreign key(" + ListTable.Cols.OWNERUSERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
+
         db.execSQL("create table " + ItemInListTable.NAME + "(" +
                 ItemInListTable.Cols.UUID + " text primary key, " +
-                ItemInListTable.Cols.COUNT + " integer not null, " +
+                ItemInListTable.Cols.COUNT + " real not null, " +
                 ItemInListTable.Cols.ADDDATE + " real not null, " +
                 ItemInListTable.Cols.ITEMID + " text not null, " +
                 ItemInListTable.Cols.LISTID + " text, " +
-                ItemInListTable.Cols.QUANTITYBOUGHT + " text not null, " +
+                ItemInListTable.Cols.QUANTITYBOUGHT + " real not null, " +
                 ItemInListTable.Cols.BUYONDATE + " real, " +
                 ItemInListTable.Cols.ISPRIORITY + " integer not null check(" + ItemInListTable.Cols.ISPRIORITY + " in ('0', '1')), " +
                 ItemInListTable.Cols.USERID + " text not null, " +
                 "foreign key(" + ItemInListTable.Cols.ITEMID + ") references " + ItemTable.NAME + "(" + ItemTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemInListTable.Cols.LISTID + ") references " + ListTable.NAME + "(" + ListTable.Cols.UUID + ")" + ", " +
                 "foreign key(" + ItemInListTable.Cols.USERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
-
-        db.execSQL("create table " + ListTable.NAME + "(" +
-                ListTable.Cols.UUID + " text primary key, " +
-                ListTable.Cols.LISTNAME + " text not null, " +
-                ListTable.Cols.OWNERUSERID + " text not null, " +
-                "foreign key(" + ListTable.Cols.OWNERUSERID + ") references " + UserTable.NAME + "(" + UserTable.Cols.UUID + ")" + ")");
 
         db.execSQL("create table " + AllowedUserToListTable.NAME + "(" +
                 AllowedUserToListTable.Cols.UUID + " text primary key, " +

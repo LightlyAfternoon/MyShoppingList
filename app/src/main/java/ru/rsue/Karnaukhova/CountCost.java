@@ -5,10 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
+import ru.rsue.Karnaukhova.dto.mapper.WeightUnitDTOMapper;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.entity.WeightUnit;
@@ -26,7 +29,7 @@ public class CountCost {
                 null);
         return new ItemCursorWrapper(cursor);
     }
-    public static double CountCost(ItemInList itInL, double cost, Context mContext) {
+    public static double CountCost(ItemInList itInL, double cost, Context mContext) throws ExecutionException, InterruptedException {
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
 
         ItemCursorWrapper itemCursorWrapper = queryItemWithName(itInL.getItemId().toString());
@@ -42,7 +45,8 @@ public class CountCost {
             itemCursorWrapper.close();
         }
 
-        WeightUnit weightUnit = WeightUnitRepository.get(mContext).getWeightUnitOfItem(it);
+        Item finalIt = it;
+        WeightUnit weightUnit = WeightUnitDTOMapper.INSTANCE.mapToEntity(Executors.newSingleThreadExecutor().submit(() -> WeightUnitRepository.get(mContext).getWeightUnitOfItem(finalIt)).get());
         String nameWeightUnit = weightUnit.getName();
 
         if (nameWeightUnit.equals("шт.") || nameWeightUnit.equals("кг") || nameWeightUnit.equals("л")){

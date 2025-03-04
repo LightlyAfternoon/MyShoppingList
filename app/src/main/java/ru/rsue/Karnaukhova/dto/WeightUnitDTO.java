@@ -1,12 +1,14 @@
-package ru.rsue.Karnaukhova.entity;
+package ru.rsue.Karnaukhova.dto;
 
 import java.util.UUID;
 
-public class WeightUnit {
+public class WeightUnitDTO {
     private UUID uuid;
     private String mName;
 
-    public WeightUnit(UUID uuid) {
+    public WeightUnitDTO() {}
+
+    public WeightUnitDTO(UUID uuid) {
         this.uuid = uuid;
     }
 

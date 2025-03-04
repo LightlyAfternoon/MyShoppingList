@@ -36,27 +36,26 @@ public class MainActivity extends AppCompatActivity {
                 id = String.valueOf(menuItem.getItemId());
                 if (Integer.parseInt(id) == R.id.daily_purchases_select) {
                     fragmentClass = DailyProductsHost.class;
-                }
-                else if (Integer.parseInt(id) == R.id.items_select) {
+                } else if (Integer.parseInt(id) == R.id.items_select) {
                     fragmentClass = ProductsHost.class;
-                }
-                else if (Integer.parseInt(id) == R.id.lists_select) {
+                } else if (Integer.parseInt(id) == R.id.lists_select) {
                     fragmentClass = ItemsListsHost.class;
-                }
-                else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
+                } else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
                     fragmentClass = ListsPurchasesHost.class;
                 }
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
                 }
+
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
                 menuItem.setChecked(true);
 
                 mDrawerLayout.closeDrawer(GravityCompat.START);
+
                 return true;
             }
         });
@@ -69,20 +68,17 @@ public class MainActivity extends AppCompatActivity {
         if (id != null) {
             if (Integer.parseInt(id) == R.id.daily_purchases_select) {
                 fragmentClass = DailyProductsHost.class;
-            }
-            else if (Integer.parseInt(id) == R.id.items_select) {
+            } else if (Integer.parseInt(id) == R.id.items_select) {
                 fragmentClass = ProductsHost.class;
-            }
-            else if (Integer.parseInt(id) == R.id.lists_select) {
+            } else if (Integer.parseInt(id) == R.id.lists_select) {
                 fragmentClass = ItemsListsHost.class;
-            }
-            else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
+            } else if (Integer.parseInt(id) == R.id.lists_purchases_select) {
                 fragmentClass = ListsPurchasesHost.class;
             }
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IllegalAccessException | InstantiationException e) {
+                throw new RuntimeException(e);
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();

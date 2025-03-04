@@ -43,9 +43,7 @@ AddList extends AppCompatActivity {
 
                 ListRepository.get(AddList.this).addList(mList);
 
-                Toast toast = new Toast(AddList.this);
-                toast.setText("Добавлено");
-                toast.show();
+                Toast.makeText(AddList.this, "Добавлено", Toast.LENGTH_SHORT).show();
 
                 finish();
             }

@@ -1,14 +1,16 @@
-package ru.rsue.Karnaukhova.entity;
+package ru.rsue.Karnaukhova.dto;
 
 import java.util.UUID;
 
-public class User {
+public class UserDTO {
     UUID uuid;
     String login;
     String password;
     String nickname;
 
-    public User(UUID uuid) { this.uuid = uuid; }
+    public UserDTO() {}
+
+    public UserDTO(UUID uuid) { this.uuid = uuid; }
 
     public UUID getUuid() { return uuid; }
 

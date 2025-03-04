@@ -97,7 +97,7 @@ public class AddItemInList extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 item = (Item) parent.getItemAtPosition(position);
 
-                ItemCursorWrapper weightUnitCursor = queryWeightUnitWithUUID(item.getWeightUnit().toString());
+                ItemCursorWrapper weightUnitCursor = queryWeightUnitWithUUID(item.getWeightUnitUuid().toString());
                 try {
                     weightUnitCursor.moveToFirst();
                     while (!weightUnitCursor.isAfterLast()) {
@@ -165,11 +165,11 @@ public class AddItemInList extends AppCompatActivity {
                     date = sdf.parse(mItemAddDate.getText().toString());
                     mItemInList.setAddDate(sdf.parse(sdf.format(new Date().getTime())).getTime());
                     if (mRbtList.isChecked()) {
-                        mItemInList.setListId(list.getId());
+                        mItemInList.setListId(list.getUuid());
                     } else {
                         mItemInList.setBuyOnDate(date.getTime());
                     }
-                    mItemInList.setItemId(item.getId());
+                    mItemInList.setItemId(item.getUuid());
                     mItemInList.setQuantityBought(0f);
                     mItemInList.setIsPriority(mIsPriority.isChecked());
                     mItemInList.setUserId(CurrentUser.currentUser.getUuid());

@@ -1,8 +1,8 @@
-package ru.rsue.Karnaukhova.entity;
+package ru.rsue.Karnaukhova.dto;
 
 import java.util.UUID;
 
-public class ItemInList {
+public class ItemInListDTO {
     UUID uuid;
     float count;
     long addDate;
@@ -13,7 +13,9 @@ public class ItemInList {
     boolean isPriority;
     UUID userId;
 
-    public ItemInList(UUID uuid) {
+    public ItemInListDTO() {}
+
+    public ItemInListDTO(UUID uuid) {
         this.uuid = uuid;
     }
 

@@ -63,9 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     UserRepository.get(RegisterActivity.this).addUser(newUser);
 
-                    Toast toast = new Toast(RegisterActivity.this);
-                    toast.setText("Вы успешно зарегистрированны!");
-                    toast.show();
+                    Toast.makeText(RegisterActivity.this, "Вы успешно зарегистрированы!", Toast.LENGTH_SHORT).show();
 
                     cursor.close();
 

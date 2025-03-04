@@ -1,13 +1,13 @@
-package ru.rsue.Karnaukhova.entity;
+package ru.rsue.Karnaukhova.dto;
 
 import java.util.UUID;
 
-public class ItemList {
+public class ItemListDTO {
     UUID uuid;
     String listName;
     UUID ownerUserId;
 
-    public ItemList(UUID uuid) {
+    public ItemListDTO(UUID uuid) {
         this.uuid = uuid;
     }
 

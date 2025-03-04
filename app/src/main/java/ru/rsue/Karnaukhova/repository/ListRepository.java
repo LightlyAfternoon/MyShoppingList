@@ -38,7 +38,7 @@ public class ListRepository {
 
     public List<ItemList> getLists() {
         List<ItemList> itemsLists = new ArrayList<>();
-        mCursorWrapper = queryItemsLists("ownerUserId = ?", new String[] {CurrentUser.currentUser.getUuid().toString()});
+        mCursorWrapper = queryItemsLists(ItemDbSchema.ListTable.Cols.OWNERUSERID + " = ?", new String[] {CurrentUser.currentUser.getUuid().toString()});
         try {
             mCursorWrapper.moveToFirst();
             while (!mCursorWrapper.isAfterLast()) {
@@ -54,7 +54,7 @@ public class ListRepository {
 
     private static ContentValues getContentValues(ItemList itemList) {
         values = new ContentValues();
-        values.put(ItemDbSchema.ListTable.Cols.UUID, itemList.getId().toString());
+        values.put(ItemDbSchema.ListTable.Cols.UUID, itemList.getUuid().toString());
         values.put(ItemDbSchema.ListTable.Cols.LISTNAME, String.valueOf(itemList.getListName()));
         values.put(ItemDbSchema.ListTable.Cols.OWNERUSERID, String.valueOf(itemList.getOwnerUserId()));
 

@@ -1,10 +1,10 @@
-package ru.rsue.Karnaukhova.entity;
+package ru.rsue.Karnaukhova.dto;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class Item {
+public class ItemDTO {
     UUID uuid;
     String name;
     UUID weightUnitId;
@@ -12,7 +12,9 @@ public class Item {
     String color;
     UUID userId;
 
-    public Item(UUID uuid) {
+    public ItemDTO() {}
+
+    public ItemDTO(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -23,7 +25,7 @@ public class Item {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public UUID getWeightUnitUuid() {
+    public UUID getWeightUnit() {
         return weightUnitId;
     }
     public void setWeightUnit(UUID weightUnit) {

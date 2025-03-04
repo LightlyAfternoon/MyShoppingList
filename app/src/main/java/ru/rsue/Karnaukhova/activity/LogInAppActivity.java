@@ -2,7 +2,6 @@ package ru.rsue.Karnaukhova.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.widget.Button;
@@ -10,13 +9,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jetbrains.annotations.NotNull;
 import ru.rsue.Karnaukhova.CurrentUser;
 import ru.rsue.Karnaukhova.MainActivity;
 import ru.rsue.Karnaukhova.R;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
-import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
-import ru.rsue.Karnaukhova.database.ItemDbSchema.UserTable;
-import ru.rsue.Karnaukhova.entity.User;
+import ru.rsue.Karnaukhova.dto.UserDTO;
+import ru.rsue.Karnaukhova.dto.UserLogInDTO;
+import ru.rsue.Karnaukhova.dto.mapper.UserDTOMapper;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LogInAppActivity extends AppCompatActivity {
     SQLiteDatabase database;
@@ -42,28 +56,30 @@ public class LogInAppActivity extends AppCompatActivity {
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cursor cursor = database.rawQuery("select count(*) as 'total' from " + UserTable.NAME +
-                        " where Login = '" + logInEditText.getText() + "' AND Password = '" + passwordEditText.getText() + "'", null);
-                cursor.moveToFirst();
-                int usersCount = cursor.getInt(0);
-                cursor.close();
+                try {
+                    String s = Executors.newSingleThreadExecutor().submit(() -> getLoggedInUser()).get();
 
-                if (usersCount > 0) {
-                    Cursor uuidCursor = database.rawQuery("select * from " + UserTable.NAME +
-                            " where Login = '" + logInEditText.getText() + "' AND Password = '" + passwordEditText.getText() + "'", null);
-                    uuidCursor.moveToFirst();
-                    User currentUser = new ItemCursorWrapper(uuidCursor).getUser();
-                    uuidCursor.close();
-                    CurrentUser.currentUser = currentUser;
+                    if (!s.isEmpty()) {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        UserDTO userDTO = objectMapper.readValue(s, UserDTO.class);
 
-                    Toast.makeText(LogInAppActivity.this, "Здравствуйте, " + CurrentUser.currentUser.getNickname(), Toast.LENGTH_LONG).show();
+                        CurrentUser.currentUser = UserDTOMapper.INSTANCE.mapToEntity(userDTO, userDTO.getUuid());
 
-                    Intent intent = new Intent(LogInAppActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    Toast toast = Toast.makeText(context, "Неправильный логин и/или пароль", Toast.LENGTH_LONG);
-                    toast.show();
+                        Toast.makeText(LogInAppActivity.this, "Здравствуйте, " + CurrentUser.currentUser.getNickname(), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(LogInAppActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(context, "Неправильный логин и/или пароль", Toast.LENGTH_LONG).show();
+                    }
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (JsonMappingException e) {
+                    throw new RuntimeException(e);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -75,5 +91,47 @@ public class LogInAppActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @NotNull
+    private String getLoggedInUser() {
+        HttpURLConnection httpURLConnection;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        try {
+            URL url = new URL("http://10.0.2.2:8080/MyShoppingListBackend/login");
+
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.setRequestMethod("POST");
+
+            try (DataOutputStream dataOutputStream = new DataOutputStream(httpURLConnection.getOutputStream())) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                UserLogInDTO userLogInDTO = new UserLogInDTO();
+
+                userLogInDTO.setLogin(logInEditText.getText().toString());
+                userLogInDTO.setPassword(passwordEditText.getText().toString());
+
+                dataOutputStream.writeBytes(objectMapper.writeValueAsString(userLogInDTO));
+                dataOutputStream.flush();
+            }
+
+            httpURLConnection.connect();
+
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()))) {
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+            }
+
+            httpURLConnection.disconnect();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return stringBuilder.toString();
     }
 }

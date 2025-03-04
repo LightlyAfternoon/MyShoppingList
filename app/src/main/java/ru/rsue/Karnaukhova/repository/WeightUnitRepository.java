@@ -4,12 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.database.ItemCursorWrapper;
 import ru.rsue.Karnaukhova.database.ItemDbSchema;
+import ru.rsue.Karnaukhova.dto.WeightUnitDTO;
 import ru.rsue.Karnaukhova.entity.Item;
 import ru.rsue.Karnaukhova.entity.WeightUnit;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +39,56 @@ public class WeightUnitRepository {
         mDatabase = new ItemBaseHelper(mContext).getWritableDatabase();
     }
 
-    public WeightUnit getWeightUnitOfItem(Item it) {
-        WeightUnit weightUnit = null;
-        mCursorWrapper = queryWeightUnit(it);
+//    public WeightUnit getWeightUnitOfItem(Item it) {
+//        WeightUnit weightUnit = null;
+//        mCursorWrapper = queryWeightUnit(it);
+//        try {
+//            mCursorWrapper.moveToFirst();
+//            weightUnit = mCursorWrapper.getWeightUnit();
+//        } finally {
+//            mCursorWrapper.close();
+//        }
+//
+//        return weightUnit;
+//    }
+
+    public WeightUnitDTO getWeightUnitOfItem(Item it) {
+        WeightUnitDTO weightUnitDTO = null;
+
+        HttpURLConnection httpURLConnection;
+        StringBuilder stringBuilder = new StringBuilder();
+
         try {
-            mCursorWrapper.moveToFirst();
-            weightUnit = mCursorWrapper.getWeightUnit();
-        } finally {
-            mCursorWrapper.close();
+            URL url = new URL("http://10.0.2.2:8080/MyShoppingListBackend/weight_unit/" + it.getWeightUnitUuid());
+
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.setRequestMethod("GET");
+
+            httpURLConnection.connect();
+
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()))) {
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+            }
+
+            httpURLConnection.disconnect();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        return weightUnit;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            weightUnitDTO = objectMapper.readValue(stringBuilder.toString(), WeightUnitDTO.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return weightUnitDTO;
     }
 
     public List<WeightUnit> getWeightUnits() {
@@ -75,7 +122,7 @@ public class WeightUnitRepository {
         Cursor cursor = mDatabase.query(ItemDbSchema.WeightUnitTable.NAME,
                 null,
                 ItemDbSchema.WeightUnitTable.Cols.UUID + " = ?",
-                new String[]{it.getWeightUnit().toString()},
+                new String[]{it.getWeightUnitUuid().toString()},
                 null,
                 null,
                 null);

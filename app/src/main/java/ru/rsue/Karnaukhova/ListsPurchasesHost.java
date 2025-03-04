@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ru.rsue.Karnaukhova.activity.AddItemInList;
-import ru.rsue.Karnaukhova.adapter.ProductInListAdapter;
+import ru.rsue.Karnaukhova.adapter.ItemInListAdapter;
 import ru.rsue.Karnaukhova.database.ItemBaseHelper;
 import ru.rsue.Karnaukhova.entity.ItemInList;
 import ru.rsue.Karnaukhova.repository.ItemInListRepository;
@@ -29,7 +29,7 @@ public class ListsPurchasesHost extends Fragment {
 
     ArrayList<ItemInList> itemsInList = new ArrayList<ItemInList>();
     ListView itemsInListView;
-    ProductInListAdapter itemInListAdapter;
+    ItemInListAdapter itemInListAdapter;
 
     Context mContext;
     SQLiteDatabase mDatabase;
@@ -57,7 +57,7 @@ public class ListsPurchasesHost extends Fragment {
         itemsInListView = getView().findViewById(R.id.item_list_view);
         if (itemInListAdapter == null) {
             itemsInList.addAll(itemInListRepository.getListsItems());
-            itemInListAdapter = new ProductInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
+            itemInListAdapter = new ItemInListAdapter(getContext(), R.layout.product_in_list_item, itemsInList);
             itemsInListView.setAdapter(itemInListAdapter);
 
             sort();
